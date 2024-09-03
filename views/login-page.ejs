@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RetroMe</title>
+    <link rel="icon" type="image/png" href="assets/little-dude.png">
+    <link rel="stylesheet" href="/css/login-page.css"> 
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+    <script src="/js/login-page.js"></script> 
+</head>
+
+<body id="body" background='../assets/purple-pixelated.jpg'>
+    <div id="login-page">
+        <img src="/assets/icons8-pixel-48.png" id="login-lildude-background" alt="Calendar Dude">
+
+        <% if (error) { %>
+            <div class="error-message"><%= error %></div>
+        <% } %>
+
+        <form class="login-form" action="/login" method="POST">
+            <label for="username">USERNAME</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">PASSWORD</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit" id="login-button">LOG IN</button>
+            
+        </form>
+
+        <form action="/signup" method="GET">
+            <button type="submit" id="sign-button">SIGN UP</button>
+        </form>
+    </div>
+</body>
+</html>

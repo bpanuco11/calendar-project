@@ -1,0 +1,91 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Use the full height of the viewport */
+    margin: 0; 
+    background-size: cover; /* Make sure the image covers the entire div */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
+.hidden {
+    display: none;
+}
+
+#login-page, #signup-page {
+    font-family: 'Press Start 2P', cursive;
+    padding: 50px 100px 100px 100px;
+    background-color: rgb(106, 119, 230);
+    border: 4px solid black;
+    position: relative;
+    height: 200px; /* Fixed height */
+}
+
+#signup-page{
+    background-color: rgb(112, 167, 107);
+    border: 4px solid darkgrey;
+}
+
+#login-lildude-background, #signup-lildude-background {
+    position: absolute;
+    top: -75px; /* Adjust this value as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: -1;
+    width: 100px; /* Adjust size as needed */
+    height: auto;
+    opacity: 0.7; /* Optional: make the image semi-transparent */
+}
+.login-form, .signup-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-form label, .signup-form label {
+    margin-bottom: 5px;
+}
+
+.login-form input, .signup-form input {
+    margin-bottom: 55px;
+    background-color: rgb(192, 230, 220);
+    border-color: black;
+    height: 20px;
+}
+
+.login-form input:hover, .signup-form input:hover {
+    background-color: rgb(226, 232, 48);
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"],
+.signup-form input[type="text"],
+.signup-form input[type="password"] {
+    font-family: 'Press Start 2P', cursive;
+}
+
+#login-page button, #signup-button, #back-button {
+    margin-bottom: 15px;
+    font-family: 'Press Start 2P', cursive;
+    border: 2px solid black;
+    padding: 5px 10px;
+    background-color: rgb(192, 230, 220);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+#login-page button:hover, #signup-page button:hover, #back-button button:hover  {
+    background-color: yellow;
+}
+
+#sign-button, #back-button {
+    position: absolute;
+    bottom: 10px; /* Space from the bottom of the #login-page container */
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0; /* Remove default margin */
+}

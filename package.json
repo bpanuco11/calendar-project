@@ -1,0 +1,18 @@
+{
+  "name": "calendar-project",
+  "version": "1.0.0",
+  "description": "https://bpanuco11.github.io/calendar-project/\r http://localhost:3000/login",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "ejs": "^3.1.10",
+    "express": "^4.19.2",
+    "mysql2": "^3.11.0"
+  }
+}
