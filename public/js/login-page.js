@@ -1,10 +1,8 @@
-document.addEventListener('DOMContentLoaded', function () {
-    // Handle image switching only if the background image element exists
+// Function to handle image switching
+function handleImageSwitching() {
     const backgroundImage = document.getElementById('login-lildude-background');
-    const closeBtn = document.getElementById('close-btn');
-    
     if (backgroundImage) {
-        let images = [
+        const images = [
             'assets/icons8-pixel-48.png',
             'assets/icons8-pixel-cat-50.png'
         ];
@@ -15,7 +13,11 @@ document.addEventListener('DOMContentLoaded', function () {
             backgroundImage.src = images[currentIndex];
         }, 5000); // 5 seconds
     }
+}
 
+// Function to handle closing error message
+function handleCloseButton() {
+    const closeBtn = document.getElementById('close-btn');
     if (closeBtn) {
         closeBtn.addEventListener('click', () => {
             const errorMessage = document.getElementById('error-message');
@@ -24,4 +26,51 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+}
+
+// Function to handle audio control
+function handleAudioControl() {
+    const backgroundAudio = document.getElementById('background-audio');
+    const audioIcon = document.getElementById('audio-icon');
+    let isMuted = false; // Set to true if audio should be muted initially
+
+    // Initialize audio state
+    backgroundAudio.muted = isMuted;
+    audioIcon.src = isMuted ? 'assets/speaker-off.png' : 'assets/speaker-on.png';
+
+    // Toggle audio mute/unmute on icon click
+    audioIcon.addEventListener('click', () => {
+        isMuted = !isMuted; // Toggle the mute state
+        backgroundAudio.muted = isMuted;
+        audioIcon.src = isMuted ? 'assets/speaker-off.png' : 'assets/speaker-on.png';
+    });
+}
+
+// Function to start audio on user interaction
+function handleStartAudio() {
+    const backgroundAudio = document.getElementById('background-audio');
+    function startAudio() {
+        backgroundAudio.play();
+        document.removeEventListener('click', startAudio);
+        document.removeEventListener('keypress', startAudio);
+    }
+    document.addEventListener('click', startAudio);
+    document.addEventListener('keypress', startAudio);
+}
+
+// Function to update the year in the copyright notice
+function handleYearUpdate() {
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+}
+
+// Initialize functions when the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+    handleImageSwitching();
+    handleCloseButton();
+    handleAudioControl();
+    handleStartAudio();
+    handleYearUpdate();
 });

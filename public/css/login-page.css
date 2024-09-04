@@ -16,16 +16,16 @@ body {
 #login-page, #signup-page {
     font-family: 'Press Start 2P', cursive;
     padding: 50px 100px 100px 100px;
-    background-color: rgb(100, 108, 181);
+    /*background-color: rgb(100, 108, 181);*/
+    background-color: rgba(100, 108, 181, 0.8); /* Added alpha for transparency */
     border: 4px solid darkslateblue;
     border-radius: 15px; /* Adjust this value as needed */
     position: relative;
     height: 200px; /* Fixed height */
 }
-/* background-color: rgb(106, 119, 230);*/
 
 #signup-page{
-    background-color: rgb(112, 167, 107);
+    background-color: rgba(112, 167, 107,0.8);
     border: 4px solid darkgrey;
 }
 
@@ -120,4 +120,28 @@ body {
 
 .close-btn:hover {
     color: #ff0000;
+}
+
+#audio-control {
+    position: fixed; /* Fixes the icon to the viewport */
+    top: 20px; /* Distance from the top of the viewport */
+    right: 20px; /* Distance from the right side of the viewport */
+    cursor: pointer; /* Shows a pointer cursor when hovering over the icon */
+    z-index: 1000; /* Ensures the icon is above other elements */
+}
+
+#audio-control img {
+    width: 32px; /* Width of the icon */
+    height: 32px; /* Height of the icon */
+}
+
+#copyright {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Press Start 2P', cursive; /* Use the same font as other elements */
+    color: yellow; /* Adjust color based on your design */
+    font-size: 12px; /* Adjust font size as needed */
+    text-align: center;
 }

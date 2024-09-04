@@ -11,6 +11,16 @@
 </head>
 
 <body id="body" background="../assets/green3.gif">
+    <audio id="background-audio" loop>
+        <source src="../assets/song1.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Audio control icon -->
+    <div id="audio-control">
+        <img src="../assets/speaker-off.png" alt="Audio Control" id="audio-icon">
+    </div>
+
     <div id="signup-page">
         <img src="/assets/icons8-pug-48.png" id="signup-lildude-background" alt="Calendar Dude">
 
@@ -34,6 +44,9 @@
         <form action="/login" method="GET">
             <button type="submit" id="back-button">BACK</button>
         </form>
+    </div>
+    <div id="copyright">
+        &copy; <span id="year"></span> Panuco Productions
     </div>
 </body>
 </html>
