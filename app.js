@@ -33,8 +33,8 @@ app.get('/signup', (req, res) => {
 
 // Handle form submission
 app.post('/login', (req, res) => {
-  console.log('Login form submitted');  // Add this line to see if the request is hitting the route
 
+  console.log('Request Body:', req.body); // Add this line to debug
   const { username, password } = req.body;
   console.log('Username:', username);  // Log the received username
   console.log('Password:', password);  // Log the received password
@@ -53,9 +53,8 @@ app.post('/login', (req, res) => {
 
       if (results.length === 0) {
         // Username does not exist
-        return res.render('login-page.ejs', { error: 'Username does not exist.' });
+        return res.render('login-page.ejs', { error: 'USERNAME DOES NOT EXIST' });
       }
-
       const hashedPassword = results[0].password;
       console.log('Hashed Password:', hashedPassword);  // Log the hashed password from the database
 
@@ -65,20 +64,66 @@ app.post('/login', (req, res) => {
           console.error('Error comparing passwords:', err);
           return res.render('login-page.ejs', { error: 'Login failed. Please try again.' });
         }
-
         if (match) {
           // Passwords match, log in successful
           res.send('Login successful!');
           console.log('Login successful!');  // Log successful login
         } else {
           // Passwords do not match
-          res.render('login-page.ejs', { error: 'Password does not match.' });
+          res.render('login-page.ejs', { error: 'PASSWORD INCORRECT' });
           console.log('Password does not match');  // Log failed login
         }
       });
     }
   );
 });
+
+app.post('/signup', (req, res) => {
+  const { username, password } = req.body;
+
+  // Query the database to check if the username already exists
+  connection.query(
+    'SELECT username FROM users WHERE username = ?',
+    [username],
+    (err, results) => {
+      if (err) {
+        console.error('Database query error:', err);
+        return res.render('signup-page.ejs', { error: 'Database error. Please try again.' });
+      }
+
+      if (results.length > 0) {
+        // Username already exists
+        return res.render('signup-page.ejs', { error: 'USERNAME ALREADY TAKEN' });
+      }
+
+      // Username is valid, so insert the new user into the database
+      // You can replace bcrypt.hash() with a simple placeholder password if needed
+      bcrypt.hash(password, 10, (err, hashedPassword) => {
+        if (err) {
+          console.error('Error hashing password:', err);
+          return res.render('signup-page.ejs', { error: 'Registration failed. Please try again.' });
+        }
+
+        // Insert the new user into the database
+        connection.query(
+          'INSERT INTO users (username, password) VALUES (?, ?)',
+          [username, hashedPassword],
+          (err, results) => {
+            if (err) {
+              console.error('Database insert error:', err);
+              return res.render('signup-page.ejs', { error: 'Registration failed. Please try again.' });
+            }
+
+            // Registration successful
+            res.send('Register complete!');
+            console.log('Register complete!');
+          }
+        );
+      });
+    }
+  );
+});
+
 
 
 // Start the server

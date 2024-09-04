@@ -16,11 +16,13 @@ body {
 #login-page, #signup-page {
     font-family: 'Press Start 2P', cursive;
     padding: 50px 100px 100px 100px;
-    background-color: rgb(106, 119, 230);
-    border: 4px solid black;
+    background-color: rgb(100, 108, 181);
+    border: 4px solid darkslateblue;
+    border-radius: 15px; /* Adjust this value as needed */
     position: relative;
     height: 200px; /* Fixed height */
 }
+/* background-color: rgb(106, 119, 230);*/
 
 #signup-page{
     background-color: rgb(112, 167, 107);
@@ -88,4 +90,34 @@ body {
     left: 50%;
     transform: translateX(-50%);
     margin: 0; /* Remove default margin */
+}
+
+.error-message {
+    text-align: center;
+    background-color: #ffcccc;
+    color: #cc0000;
+    border: 1px solid #cc0000;
+    padding: 10px;
+    position: absolute;
+    top: 5px; /* Adjust this value to move the box down or up from the top */
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 5px;
+    z-index: 1000; /* Ensure the error box is on top of other content */
+    width: 400px; /* Set a fixed width */
+}
+
+.close-btn {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    color: #cc0000;
+}
+
+.close-btn:hover {
+    color: #ff0000;
 }

@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     // Handle image switching only if the background image element exists
     const backgroundImage = document.getElementById('login-lildude-background');
+    const closeBtn = document.getElementById('close-btn');
     
     if (backgroundImage) {
         let images = [
@@ -13,5 +14,14 @@ document.addEventListener('DOMContentLoaded', function () {
             currentIndex = (currentIndex + 1) % images.length;
             backgroundImage.src = images[currentIndex];
         }, 5000); // 5 seconds
+    }
+
+    if (closeBtn) {
+        closeBtn.addEventListener('click', () => {
+            const errorMessage = document.getElementById('error-message');
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+        });
     }
 });

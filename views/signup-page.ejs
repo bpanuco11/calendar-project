@@ -10,12 +10,15 @@
     <script src="/js/signin-page.js"></script>
 </head>
 
-<body id="body" background="../assets/field.jpg">
+<body id="body" background="../assets/green3.gif">
     <div id="signup-page">
         <img src="/assets/icons8-pug-48.png" id="signup-lildude-background" alt="Calendar Dude">
 
         <% if (error) { %>
-            <div class="error-message"><%= error %></div>
+            <div class="error-message" id="error-message">
+                <span class="close-btn" id="close-btn">&times;</span>
+                <%= error %>
+            </div>
         <% } %>
 
         <form class="signup-form" action="/signup" method="POST">
@@ -25,7 +28,7 @@
             <label for="password">PASSWORD</label>
             <input type="password" id="password" name="password" required>
 
-            <button type="submit" id="signup-button">SIGN IN</button>
+            <button type="submit" id="signup-button">REGISTER</button>
         </form>
 
         <form action="/login" method="GET">
