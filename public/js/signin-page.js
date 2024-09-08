@@ -79,8 +79,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     handleImageSwitching('signup-lildude-background', [
-        'assets/icons8-pug-48.png',
-        'assets/zz.png'
+        'assets/gray-pug.png',
+        'assets/brown-pug.png'
     ]);
     handleCloseButton('close-btn', 'error-message');
     handleAudioControl('background-audio', 'audio-icon');
