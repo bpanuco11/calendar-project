@@ -1,3 +1,4 @@
+/*
 // Function to handle image switching
 function handleImageSwitching() {
     const backgroundImage = document.getElementById('signup-lildude-background');
@@ -73,4 +74,16 @@ document.addEventListener('DOMContentLoaded', function () {
     handleAudioControl();
     handleStartAudio();
     handleYearUpdate();
+});
+*/
+
+document.addEventListener('DOMContentLoaded', function () {
+    handleImageSwitching('signup-lildude-background', [
+        'assets/icons8-pug-48.png',
+        'assets/zz.png'
+    ]);
+    handleCloseButton('close-btn', 'error-message');
+    handleAudioControl('background-audio', 'audio-icon');
+    handleStartAudio('background-audio');
+    handleYearUpdate('year');
 });
