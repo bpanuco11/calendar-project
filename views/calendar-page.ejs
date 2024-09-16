@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="calendar-front.css">
+</head>
+<body background="purple2.gif">
+
+    <div class="header-container">
+        <div class="calendar-title">RetroPug </div>
+        <img src="keshote.png" alt="Calendar Image" class="calendar-image">
+        <div class="header-button-container">
+            <button class="button" id="prevMonth-header">&lt;</button>
+            <button class="button" id="nextMonth-header">&gt;</button>
+        </div>
+        <div class="monthYear-header" id="headerMonthYear"></div> <!-- Added monthYear -->
+        <div class="search-bar-container">
+            <input type="text" placeholder="Search..." class="search-bar">
+        </div>
+        <div class="profile-container">
+            <img src="pug-doggy.jpg" alt="Profile" class="profile-pic">
+        </div>
+    </div>
+    <div class="calendar-container">
+        <div class="calendar">
+            <div class="calendar-header">
+                <button class="button" id="prevMonth">&lt;</button>
+                <span id="monthYear"></span>
+                <button class="button" id="nextMonth">&gt;</button>
+            </div>
+            <div class="calendar-body" id="calendarDays">
+                    
+            </div>
+        </div>
+    </div>
+    <div class="left-section-container">
+        <div class="labels-container-left">
+            <div class="label-item">
+                <input type="checkbox" id="important">
+                <label for="important">Important</label>
+            </div>
+            <div class="label-item">
+                <input type="checkbox" id="meeting">
+                <label for="meeting">Meeting</label>
+            </div>
+            <div class="label-item">
+                <input type="checkbox" id="task">
+                <label for="task">Task</label>
+            </div>
+            <div class="label-item">
+                <input type="checkbox" id="birthday">
+                <label for="birthday">Birthday</label>
+            </div>
+        </div>
+        <div class="labels-container-right">
+            <div class="label-item">
+                <input type="checkbox" id="personal">
+                <label for="personal">Personal</label>
+            </div>
+            <div class="label-item">
+                <input type="checkbox" id="holiday">
+                <label for="holiday">Holiday</label>
+            </div>
+            <div class="label-item">
+                <input type="checkbox" id="appointment">
+                <label for="appointment">Appointment</label>
+            </div>
+            <div class="label-item">
+                <input type="checkbox" id="deadline">
+                <label for="deadline">Deadline</label>
+            </div>
+        </div>
+    </div>
+    <div class="calendar-big-container">
+        <div class="calendar-body" id="calendarDaysLarge">
+            <!-- Calendar days will be inserted here -->
+        </div>
+    </div>
+    <div class="right-section-container">
+        <div class="add-button">
+            +
+        </div>
+    </div>
+    <script src="calendar-generator.js"></script>
+</body>
+</html>

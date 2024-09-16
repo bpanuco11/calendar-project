@@ -1,0 +1,423 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive; 
+    text-align: center;
+    width: 100%;
+    min-height: 100vh;
+    -webkit-font-smoothing: none; 
+    font-smooth: never; 
+    image-rendering: pixelated; 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+}
+
+.header-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;    
+    width: 100%;
+    height: 10vh;
+    background-color: rgba(100, 108, 181, 0.5);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.447);
+    overflow: hidden;
+}
+.calendar-title{
+    margin-top: -5px;
+    padding: 5px 10px;
+    color: black;
+    justify-content: flex-start;
+    align-items: center;
+}
+.header-container .button {
+    padding: 0.5em 1em;
+    margin: 0 5em; /* Adds responsive space between buttons */
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: rgba(192, 230, 220, .8);
+    color: black;
+    cursor: pointer;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Add transition */
+}
+#prevMonth-header, #nextMonth-header {
+    flex-basis: auto; /* Allow buttons to size automatically */
+}
+.monthYear-header {
+    text-align: center;
+    font-size: 18px;
+    color: black;
+    font-family: 'Press Start 2P', cursive;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+    margin-left: 7%;
+}
+.search-bar-container {
+    flex-grow: 1; /* Take up available space */
+    display: flex;
+    justify-content: flex-end; /* Align search bar to the right */
+    padding-right: 20px; /* Adjust as needed */
+}
+.search-bar {
+    padding: 5px 10px; /* Padding inside the search bar */
+    border-radius: 2px; /* Rounded corners */
+    border: none; /* No border by default */
+    outline: none; /* Remove outline */
+    background-color: rgba(192, 230, 220, .8);
+    color: black; /* Text color */
+    width: 70%; /* Adjust width */
+    height: 100%; /* Adjust height */
+    -webkit-font-smoothing: none; /* Disable font smoothing */
+    font-smooth: never; /* Disable font smoothing */
+    image-rendering: pixelated; /* Pixelated rendering */
+    font-family: 'Press Start 2P', cursive; /* Font family */
+}
+.search-bar:hover{
+    background-color: rgba(100, 108, 181, 1);
+}
+.search-bar::placeholder{
+    color: black;
+}
+.search-bar:hover::placeholder {
+    color: purple; /* Placeholder color on hover */
+}
+.profile-container {
+    display: flex;
+}
+.profile-pic {
+    width: 50px; /* Adjust size as needed */
+    height: 50px;
+    border-radius: 50%;
+    background-color: #ccc; /* Placeholder background */
+}
+.calendar-container {
+    display: inline-block;
+    padding: .5% .5%;
+    background-color: rgba(100, 108, 181, 0.5);
+    width: 26.5%; /* Adjust width with percentages */
+    height: 55.5%; /* Adjust height with percentages */
+    box-sizing: border-box;
+    position: absolute;
+    top: 10vh;
+    left: 0%;
+    border-right: 2px solid rgba(0, 0, 0, 0.447); 
+    border-bottom: 2px solid rgba(0, 0, 0, 0.447);;
+    border-top: none;
+    border-left: none;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+    z-index: 1;
+    overflow: hidden;
+}
+.calendar-big-container {
+    border-right: 2px solid rgba(0, 0, 0, 0.447);;
+    box-sizing: border-box;
+    position: absolute;
+    top: 10vh;
+    /*right:0%*/
+    left: 26.5%;
+    height: 90%;
+    width: 70%;
+    padding: 0;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+}
+#calendarDaysLarge .calendar-day:nth-child(-n+7) {
+    border-top: none; /* Remove the top border for the first 7 days */
+}
+.calendar-big-container .calendar-day:nth-child(7n+1) {
+    border-left: none; /* Remove the left border */
+}
+.calendar-big-container .calendar-day:nth-child(7n) {
+    border-right: none; /* Add a gray border to the right for every 7th column */
+}
+
+.calendar-header {
+    position: relative;
+    height: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3%;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+    overflow: hidden;
+}
+.calendar{
+    height: 100%;
+    width: 100%;
+}
+.calendar-body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr);  
+    gap: .2%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden; /* Ensure contents don’t overflow */
+}
+.calendar .calendar-body{
+    height: 85%;
+    width: 100%;
+}
+.calendar-day {
+    padding: 5px;
+    padding: 10%;
+    font-size: 12px;
+    text-align: center;
+    border: 2px solid darkslateblue;
+    border: 5% solid darkslateblue;
+    background-color: rgba(192, 230, 220, 0.8);
+    font-family: 'Press Start 2P', cursive;
+    border-radius: 3px;
+    border-radius: 4%;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+}
+.calendar-day.header{
+    background-color: rgba(37, 136, 217, 0.8);
+}
+.calendar-big-container .calendar-day {
+    font-size: 12px;
+    background-color: rgba(192, 230, 220, 0.8);
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    border: 2px solid darkslateblue;
+    text-align: center;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+}
+.calendar-day.other-month {
+    background-color: rgba(255, 255, 255, .4); /* Semi-transparent white background */
+}
+.calendar-container .button {
+    padding: 5px 10px;
+    margin: 0 10px;
+    border: 2px solid black;
+    border-radius: 15px;
+    border-radius: 5px;
+    background-color: rgba(192, 230, 220, .8);
+    color: black;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+}
+.button:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+    background-color: rgba(100, 108, 181, 1);
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+    color:purple;
+}
+.header-container .button:hover {
+    transform: scale(1.1); /* Increase size on hover */
+    background-color: rgba(100, 108, 181, 1); /* Change background color on hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Add shadow */
+}
+
+#prevMonth {
+    left: 10px;
+}
+
+#nextMonth {
+    right: 10px;
+}
+
+.button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+    -webkit-font-smoothing: none;
+    font-smooth: never;
+    image-rendering: pixelated;
+}
+.left-section-container {
+    display: flex;
+    flex-direction: row; /* Stack the items vertically */
+    justify-content: flex-start;
+    width: 26.5%;
+    height: 34.5%;
+    background-color: rgba(100, 108, 181, 0.5);
+    border-right: 2px solid rgba(0, 0, 0, 0.447);
+    position: absolute;
+    top: 65.5vh; /* Align with header */
+    border-top: none;
+    left: 0%;
+    z-index: 1;
+    overflow: hidden;
+}
+.labels-container-left, .labels-container-right {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%;
+}
+.labels-container-left{
+    padding-left: 10%;
+}
+.labels-container-right{
+    padding-left: 10%;
+}
+
+.label-item {
+    display: flex;
+    gap: 2%;
+    align-items: center; /* Keeps checkbox and label aligned horizontally */
+}
+
+/* Style the checkboxes */
+input[type="checkbox"] {
+    width: 11%; 
+    height: 60%; 
+    -webkit-appearance: none;
+    appearance: none;
+    transform: scale(1.5); 
+    border: 2px solid rgba(100, 108, 181, 1);
+    border-radius: 4px;
+    background-color: rgba(192, 230, 220, 0.8);
+    cursor: pointer;
+    position: relative; /* Needed for absolute positioning */
+}
+
+input[type="checkbox"]:checked {
+    border-color: rgb(0, 0, 0);
+}
+
+input[type="checkbox"]:checked::before {
+    content: "✔";
+    display: block;
+    color: blue;
+    font-size: 16px;
+    text-align: center;
+    position: absolute;
+    top: 20%;  /* Vertically centers the checkmark */
+    left: 50%; /* Horizontally centers the checkmark */
+    transform: translate(-50%, -50%); /* Offsets by 50% to perfectly center */
+}
+.right-section-container{
+    display: flex;
+    flex-direction: row; /* Stack the items vertically */
+    justify-content: center;
+    width: 3.5%;
+    height: 90%;
+    position: absolute;
+    top: 10vh; /* Align with header */
+    right: 0%;
+}
+.add-button {
+    color: black; /* White text */
+    padding: 10px;
+    border: none;
+    font-size: 44px; /* Large font size for the "+" symbol */
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+    background-color: rgba(100, 108, 181, 1); /* Darker green when hovered */
+}
+
+.add-button:active {
+    background-color: rgba(37, 136, 217, 0.8); /* Even darker when clicked */
+}
+
+
+/* Add a media query for smaller screens */
+@media (max-width: 768px) {
+    .monthYear-header {
+        font-size: 14px; /* Scale down text size */
+    }
+
+    .header-container .button {
+        font-size: 12px; /* Scale down button text */
+        
+    }
+   
+    .left-section-container, .calendar-container{
+        width: 26.5%;
+    }
+    .calendar-body {
+        font-size: 10px; /* Scale down the text size */
+    }
+
+    .calendar-day {
+        padding: 5%; /* Adjust padding for smaller calendar days */
+    }
+    .search-bar-container {
+        flex-grow: 1; /* Take up available space */
+        display: flex;
+        justify-content: flex-end; /* Align search bar to the right */
+        padding-right: 20px; /* Adjust as needed */
+        margin-left: -5%;
+    }
+    .calendar-container .button {
+        padding: 2px 6px; /* Reduce padding to make the button smaller */
+        margin: 0 0px; /* Reduce the margin between buttons */
+        border: 2px solid black;
+        border-radius: 5px;
+        background-color: rgba(192, 230, 220, .8);
+        font-size: 0.85em; /* Reduce font size slightly */
+        color: black;
+        cursor: pointer;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        -webkit-font-smoothing: none;
+        font-smooth: never;
+        image-rendering: pixelated;
+    }
+    .header-container .button{
+        padding: .7px 6px; /* Reduce padding to make the button smaller */
+        margin: 0 5px; /* Reduce the margin between buttons */
+        font-size: 0.85em; /* Reduce font size slightly */
+    } 
+    .calendar-container{
+        width: 26.5%;
+    }
+}
+
+@media (max-width: 1024px) {
+
+    .header-container .button {
+        margin: 0 1em; /* Reduce the gap between buttons */
+    }
+    .monthYear-header {
+        text-align: center;
+        font-size: 18px;
+        color: black;
+        font-family: 'Press Start 2P', cursive;
+        -webkit-font-smoothing: none;
+        font-smooth: never;
+        image-rendering: pixelated;
+        margin-right: 9%;
+    }
+}
+
