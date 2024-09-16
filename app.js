@@ -30,7 +30,6 @@ app.get('/signup', (req, res) => {
   console.log('Signup page loaded correctly');
 });
 
-
 // Handle form submission
 app.post('/login', (req, res) => {
 
