@@ -4,23 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendar</title>
-    <link rel="stylesheet" href="calendar-front.css">
+    <link rel="stylesheet" href="../css/calendar-front.css">
+    <link rel="stylesheet" href="../css/day-view.css">
+    <link rel="stylesheet" href="../css/entry-view.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
 </head>
-<body background="purple2.gif">
+<body background="../assets/purple2.gif">
 
     <div class="header-container">
         <div class="calendar-title">RetroPug </div>
-        <img src="keshote.png" alt="Calendar Image" class="calendar-image">
+        <img src="../assets/keshote.png" alt="Calendar Image" class="calendar-image">
         <div class="header-button-container">
             <button class="button" id="prevMonth-header">&lt;</button>
             <button class="button" id="nextMonth-header">&gt;</button>
         </div>
-        <div class="monthYear-header" id="headerMonthYear"></div> <!-- Added monthYear -->
+        <div class="monthYear-header" id="headerMonthYear"></div> 
         <div class="search-bar-container">
-            <input type="text" placeholder="Search..." class="search-bar">
+            <div class="search-bar-inner">
+                <input type="text" placeholder="Search..." class="search-bar">
+                <button class="search-button">
+                    <i class="fas fa-search"></i> 
+                </button>
+            </div>
         </div>
         <div class="profile-container">
-            <img src="pug-doggy.jpg" alt="Profile" class="profile-pic">
+            <img src="../assets/pug-doggy.jpg" alt="Profile" class="profile-pic">
         </div>
     </div>
     <div class="calendar-container">
@@ -83,6 +92,118 @@
             +
         </div>
     </div>
-    <script src="calendar-generator.js"></script>
+    <div class="day-view-container" id="dayViewContainer">
+        <div class="day-view-header">
+            <header class="day-view-date" id="dayViewDate"></header>
+            <button id="add-new-entry">
+                <i class="fas fa-pencil-alt"></i>
+            </button>
+        </div>
+        <div class="day-view-entries">
+            <div class="day-view-entry">
+                <span class="entry-title">Title Here1</span>
+                <button class="entry-open">Open</button>
+                <button class="entry-delete">Delete</button>
+            </div> 
+        </div> 
+        <button class="go-back" id="closeDayView">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </div>
+    <div class="journal-window" id="journalWindow">
+        <div class="journal-header">
+            <input type="text" class="journal-title-input" id="journalTitle" placeholder="Title"> <!-- Editable title -->
+            <button class="save-entry" id="saveJournalEntry">
+                <i class="fas fa-save"></i>
+            </button>
+        </div>
+        <div class="journal-content">
+            <textarea class="journal-textarea" id="journalContent" rows="10"  placeholder="Write your entry..."></textarea> <!-- Editable content -->
+        </div>
+        <select id="journal-label">
+            <option value="task" selected>Task</option>
+            <option value="important">Important</option>
+            <option value="meeting">Meeting</option>
+            <option value="birthday">Birthday</option>
+            <option value="personal">Personal</option>
+            <option value="holiday">Holiday</option>
+            <option value="appointment">Appointment</option>
+            <option value="deadline">Deadline</option>
+        </select>
+        <div class="journal-footer">
+            <button class="go-back" id="goBackJournalWindow">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- New Entry Window -->
+    <div class="new-entry-window" id="newEntryWindow">
+        <div class="journal-header">
+            <input type="text" class="newJournal-title-input" placeholder="Title" />
+            <button class="save-entry" id="saveNewJournalEntry">
+                <i class="fas fa-save"></i>
+            </button>
+        </div>
+        <div class="journal-content">
+            <textarea class="newJournal-textarea" placeholder="Write your entry..."></textarea>
+        </div>
+        <select id="newJournal-label">
+            <option value="task" selected>Task</option>
+            <option value="important">Important</option>
+            <option value="meeting">Meeting</option>
+            <option value="birthday">Birthday</option>
+            <option value="personal">Personal</option>
+            <option value="holiday">Holiday</option>
+            <option value="appointment">Appointment</option>
+            <option value="deadline">Deadline</option>
+        </select>
+        <div class="journal-footer">
+            <button class="go-back" id="goBackNewEntryWindow">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- New Entry Window + -->
+    <div class="add-new-entry-plus" id="addNewEntryPlus">
+        <div class="entry-select-date">
+            <label for="entryDatePlus">Date: </label>
+            <input type="date" id="entryDatePlus" class="newEntryDatePlus" />
+        </div>
+        <div class="journal-header">
+            <input type="text" class="newJournal-title-input" placeholder="Title" />
+            <button class="save-entry" id="saveNewEntryPlus">
+                <i class="fas fa-save"></i>
+            </button>
+        </div>
+        <div class="journal-content">
+            <textarea class="newJournal-textarea" placeholder="Write your entry..."></textarea>
+        </div>
+        <select id="newJournal-label">
+            <option value="task" selected>Task</option>
+            <option value="important">Important</option>
+            <option value="meeting">Meeting</option>
+            <option value="birthday">Birthday</option>
+            <option value="personal">Personal</option>
+            <option value="holiday">Holiday</option>
+            <option value="appointment">Appointment</option>
+            <option value="deadline">Deadline</option>
+        </select>
+        <div class="journal-footer">
+            <button class="go-back" id="goBackPlus">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <script>
+        var entries = JSON.parse(`<%- JSON.stringify(entries) %>`);
+    </script>
+    
+    <script src="/js/calendar-generator.js"></script>
+    <script src="/js/calendar-post-req.js"></script>
 </body>
 </html>

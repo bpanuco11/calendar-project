@@ -3,7 +3,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-
 body {
     font-family: 'Press Start 2P', cursive; 
     text-align: center;
@@ -16,7 +15,16 @@ body {
     background-position: center; 
     background-repeat: no-repeat; 
 }
-
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+    z-index: 10;
+    display: none; /* Hidden by default */
+}
 .header-container {
     display: flex;
     flex-direction: row;
@@ -63,34 +71,45 @@ body {
     margin-left: 7%;
 }
 .search-bar-container {
-    flex-grow: 1; /* Take up available space */
+    flex-grow: 1; 
     display: flex;
-    justify-content: flex-end; /* Align search bar to the right */
-    padding-right: 20px; /* Adjust as needed */
+    justify-content: flex-end; 
+    padding-right: 20px;
+}
+.search-bar-inner{ 
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+.search-button{
+    border-left: none;
+    background-color: rgba(37, 136, 217, 0.8);
+    border-radius: 0px 2px 2px 0px; 
+    height: 100%;
+    border: none;
+    width: 5%;
+}
+.search-button:hover{
+    background-color: rgba(75, 96, 167, 0.8);
 }
 .search-bar {
-    padding: 5px 10px; /* Padding inside the search bar */
-    border-radius: 2px; /* Rounded corners */
+    padding: 5px 10px; 
+    border-radius: 2px 0 0 2px;
     border: none; /* No border by default */
     outline: none; /* Remove outline */
     background-color: rgba(192, 230, 220, .8);
     color: black; /* Text color */
-    width: 70%; /* Adjust width */
+    width: 60%; /* Adjust width */
     height: 100%; /* Adjust height */
     -webkit-font-smoothing: none; /* Disable font smoothing */
     font-smooth: never; /* Disable font smoothing */
     image-rendering: pixelated; /* Pixelated rendering */
     font-family: 'Press Start 2P', cursive; /* Font family */
 }
-.search-bar:hover{
-    background-color: rgba(100, 108, 181, 1);
-}
 .search-bar::placeholder{
     color: black;
 }
-.search-bar:hover::placeholder {
-    color: purple; /* Placeholder color on hover */
-}
+
 .profile-container {
     display: flex;
 }
@@ -125,7 +144,6 @@ body {
     box-sizing: border-box;
     position: absolute;
     top: 10vh;
-    /*right:0%*/
     left: 26.5%;
     height: 90%;
     width: 70%;
@@ -143,7 +161,6 @@ body {
 .calendar-big-container .calendar-day:nth-child(7n) {
     border-right: none; /* Add a gray border to the right for every 7th column */
 }
-
 .calendar-header {
     position: relative;
     height: 12%;
@@ -232,19 +249,16 @@ body {
     color:purple;
 }
 .header-container .button:hover {
-    transform: scale(1.1); /* Increase size on hover */
-    background-color: rgba(100, 108, 181, 1); /* Change background color on hover */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); /* Add shadow */
+    transform: scale(1.1); 
+    background-color: rgba(100, 108, 181, 1); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); 
 }
-
 #prevMonth {
     left: 10px;
 }
-
 #nextMonth {
     right: 10px;
 }
-
 .button:disabled {
     background-color: #ddd;
     cursor: not-allowed;
@@ -281,14 +295,11 @@ body {
 .labels-container-right{
     padding-left: 10%;
 }
-
 .label-item {
     display: flex;
     gap: 2%;
     align-items: center; /* Keeps checkbox and label aligned horizontally */
 }
-
-/* Style the checkboxes */
 input[type="checkbox"] {
     width: 11%; 
     height: 60%; 
@@ -301,11 +312,9 @@ input[type="checkbox"] {
     cursor: pointer;
     position: relative; /* Needed for absolute positioning */
 }
-
 input[type="checkbox"]:checked {
     border-color: rgb(0, 0, 0);
 }
-
 input[type="checkbox"]:checked::before {
     content: "✔";
     display: block;
@@ -340,17 +349,12 @@ input[type="checkbox"]:checked::before {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
 .add-button:hover {
-    background-color: rgba(100, 108, 181, 1); /* Darker green when hovered */
+    background-color: rgba(100, 108, 181, 1); 
 }
-
 .add-button:active {
     background-color: rgba(37, 136, 217, 0.8); /* Even darker when clicked */
 }
-
-
-/* Add a media query for smaller screens */
 @media (max-width: 768px) {
     .monthYear-header {
         font-size: 14px; /* Scale down text size */
@@ -403,7 +407,6 @@ input[type="checkbox"]:checked::before {
         width: 26.5%;
     }
 }
-
 @media (max-width: 1024px) {
 
     .header-container .button {

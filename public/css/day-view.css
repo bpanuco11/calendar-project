@@ -1,0 +1,129 @@
+.day-view-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* Hidden initially */
+    flex-direction: column; /* Align items vertically */
+    align-items: center; /* Center items horizontally */
+    background-color: rgb(106, 163, 209);
+    border: 2px solid darkslateblue;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    height: 70%;
+    width: 60%;
+    overflow: auto;
+}
+.day-view-container.active {
+    display: flex;
+    flex-direction: column; /* Align content in a column */
+    z-index: 20;
+}
+.day-view-header {
+    display: flex;
+    flex-direction: row; /* Align content in a row */
+    align-items: center; /* Vertically center the items */
+    justify-content: space-between; /* Place items at the ends */
+    width: 100%;
+    padding-bottom: 10px; /* Optional: Add some spacing below the header */
+    border-bottom: 2px solid rgba(0, 0, 0, 0.2); /* Add a border below the header */
+}
+#dayViewDate {
+    flex-grow: 1; /* Allow the header to take up remaining space */
+    font-size: 18px;
+}
+#add-new-entry {
+    font-family: 'Press Start 2P', cursive; 
+    background-color: #2a9541;
+    border: 1px solid black;
+    color: white; 
+    padding: 1px 10px;
+    border-radius: 4px;
+    cursor: pointer; /* Change cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition on hover/active */
+}
+#add-new-entry:hover{
+    color: black;
+    background-color: green;
+}
+
+.day-view-entries{
+    padding-top: 1%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5%;
+    width: 98%;
+    min-height: 76.5%; 
+    height: auto; 
+    overflow: auto; 
+    box-sizing: border-box;
+}
+.day-view-entries::-webkit-scrollbar {
+    width: 12px; 
+}
+
+.day-view-entries::-webkit-scrollbar-track {
+    background: whitesmoke;
+    border-radius: 4px;
+}
+
+.day-view-entries::-webkit-scrollbar-thumb {
+    background-color: darkslateblue;
+    border-radius: 4px; /* Rounded edges */
+    border: 3px solid #e0e0e0; 
+}
+.day-view-entry {
+    display: flex;
+    flex-direction: row;
+    background-color: whitesmoke;
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    width: 95%;
+    margin-top: 1%;
+    align-items: center;
+}
+.entry-title{
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.entry-open, .entry-delete {
+    font-family: 'Press Start 2P', cursive; 
+    border: 1px solid black;
+    margin-left: 10px; /* Small gap between buttons */
+}
+.entry-open {
+    background-color: rgb(201, 201, 46); 
+    color: white; 
+    padding: 2px 8px; 
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.entry-open:hover {
+    color: black;
+    background-color: rgb(170, 170, 39);
+}
+
+.entry-delete {
+    background-color: #dc3545; 
+    color: white; 
+    padding: 2px 8px;
+    cursor: pointer; 
+    border-radius: 4px;
+}
+
+.entry-delete:hover {
+    color: black;
+    background-color: #c82333; /* Darker red on hover */
+}
+
+#closeDayView{
+    font-family: 'Press Start 2P', cursive; 
+    margin-top: 2%;
+}
+
