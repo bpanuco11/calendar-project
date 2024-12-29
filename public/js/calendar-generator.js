@@ -14,11 +14,26 @@ const goBackPlus = document.getElementById('goBackPlus');
 const calendarDaysLarge = document.getElementById('calendarDaysLarge');
 let currentDate = new Date();
 
+// Attach event listeners to checkboxes to re-render the calendar when any are changed
+const checkboxes = document.querySelectorAll('.labels-container-left input[type="checkbox"], .labels-container-right input[type="checkbox"]');
+checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', () => {
+        renderLargeCalendar(); 
+    });
+});
+
+function getCheckedLabels() {
+    const checkedLabels = [];
+    const checkboxes = document.querySelectorAll('.labels-container-left input[type="checkbox"]:checked, .labels-container-right input[type="checkbox"]:checked');
+    checkboxes.forEach(checkbox => checkedLabels.push(checkbox.id));
+    return checkedLabels;
+}
+
 function renderLargeCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    // Clear the larger calendar
+    console.log('3:',entries);
     calendarDaysLarge.innerHTML = '';
 
     // Get the first day of the current month
@@ -27,6 +42,7 @@ function renderLargeCalendar() {
     // Calculate the starting date (the Sunday before the first day of the month)
     const startDate = new Date(firstDay);
     startDate.setDate(firstDay.getDate() - firstDay.getDay());
+
     const daysToShow = 42;
 
     let dayCount = 0;
@@ -52,27 +68,57 @@ function renderLargeCalendar() {
         if (dayCount < 7) {
             // Add both day name and number for the first row
             dayCell.textContent = `${dayName} ${dayNumber}`;
-            // dayCell.className = (date.getMonth() === month) ? 'calendar-day' : 'calendar-day other-month';
-            
         } else {
             // Only add day number for subsequent rows
             dayCell.textContent = `${dayNumber}`;
-            // dayCell.className = (date.getMonth() === month) ? 'calendar-day' : 'calendar-day other-month';
         }
 
-        //dayCell.className = (date.getMonth() === month) ? 'calendar-day' : 'calendar-day other-month';
+        // Match entries with this specific date
+        const formattedDate = `${displayYear}-${String(displayMonth + 1).padStart(2, '0')}-${String(dayNumber).padStart(2, '0')}`;
+
+        // Get the checked labels from the checkboxes
+        const checkedLabels = getCheckedLabels();
+
+        // Filter entries based on both date and label
+        const matchingEntries = entries.filter(entry => {
+            const entryDate = new Date(entry.entry_date).toISOString().split('T')[0]; // Extract only the date part as YYYY-MM-DD
+            const entryLabel = entry.entry_label; // Get the label of the entry
+            return entryDate === formattedDate && checkedLabels.includes(entryLabel);
+        });
+
+        // Display up to 2 entry titles and "x+ Journals" if more than 2
+        const entryList = document.createElement('ul');
+        matchingEntries.slice(0, 2).forEach(entry => {
+            const entryItem = document.createElement('li');
+            const charCount = entry.entry_title.replace(/\s/g, ' ').length; // Counts whitespace as 1 character
+            const truncatedTitle = charCount > 15 
+                ? entry.entry_title.slice(0, 12) + '...'  // Truncate and add ellipsis
+                : entry.entry_title;
+            entryItem.textContent = truncatedTitle;
+            entryList.appendChild(entryItem);
+        });
+
+        if (matchingEntries.length > 2) {
+            const extraEntryItem = document.createElement('li');
+            const extraCount = matchingEntries.length - 2;
+            extraEntryItem.textContent = `${extraCount}+ Journals`;
+            entryList.appendChild(extraEntryItem);
+        }
+
+        dayCell.appendChild(entryList);
+
         dayCell.className = (displayMonth === month) ? 'calendar-day' : 'calendar-day other-month';
 
         dayCell.addEventListener('click', () => {
             window.displayMonth = displayMonth;
             window.displayYear = displayYear;
-            console.log(dayNumber, displayMonth, displayYear);
             showDayView(new Date(displayYear, displayMonth, dayNumber));
         });
 
         calendarDaysLarge.appendChild(dayCell);
         dayCount++;
     }
+    document.getElementById("journalTotal").textContent = `Total Journals: ${journalCount[0]['journal_count']}`;
 }
 
 function renderCalendar() {
@@ -177,11 +223,10 @@ function showDayView(date) {
 
             openButton.addEventListener('click', () => openEntry(entry));
 
-            // Create the "Delete" button
             const deleteButton = document.createElement('button');
             deleteButton.classList.add('entry-delete');
             const deleteIcon = document.createElement('i');
-            deleteIcon.classList.add('fas', 'fa-trash'); // Font Awesome trash icon classes
+            deleteIcon.classList.add('fas', 'fa-trash');
             deleteButton.appendChild(deleteIcon);
             entryDiv.appendChild(deleteButton);
 
@@ -200,6 +245,7 @@ function showDayView(date) {
 closeDayViewButton.addEventListener('click', () => { 
     dayViewContainer.classList.remove('active'); // Hide the day-view container
     document.getElementById('overlay').style.display = 'none'; // Hide overlay
+    renderLargeCalendar();
 });
 
 document.getElementById("add-new-entry").addEventListener("click", function() {
@@ -215,11 +261,29 @@ document.getElementById("goBackNewEntryWindow").addEventListener("click", functi
     document.getElementById("dayViewContainer").classList.add("active");
 });
 
+document.getElementById('saveNewEntryPlus').addEventListener('click', async () => {
+    try {
+        await saveJournalEntryPlus('.newJournal-title-inputPlus', '.newJournal-textareaPlus', '#newJournal-labelPlus', '#entryDatePlus', '/save-entry');
+        
+        // Hide the day-view container and overlay
+        entryForm.classList.remove('active'); 
+        document.getElementById('overlay').style.display = 'none';
+
+        // Now render the large calendar
+        renderLargeCalendar();
+    } catch (error) {
+        console.error('Error in saveNewEntryPlus process:', error);
+    }
+});
+
+document.getElementById('saveNewJournalEntry').addEventListener('click', () => {
+    saveJournalEntry('.newJournal-title-input', '.newJournal-textarea', '#newJournal-label', '/save-entry');
+});
+
 function openEntry(entry) {
-    // Clear any existing content inside journalWindow
+    
     journalWindow.innerHTML = '';
 
-    // Create the new structure for the journal entry
     const journalHeader = document.createElement('div');
     journalHeader.classList.add('journal-header');
 
@@ -228,7 +292,8 @@ function openEntry(entry) {
     titleInput.classList.add('journal-title-input');
     titleInput.id = 'journalTitle';
     titleInput.placeholder = 'Title';
-    titleInput.value = entry.entry_title; // Fill the title with entry data
+    titleInput.value = entry.entry_title; 
+
     journalHeader.appendChild(titleInput);
 
     const saveButton = document.createElement('button');
@@ -276,16 +341,37 @@ function openEntry(entry) {
     const journalFooter = document.createElement('div');
     journalFooter.classList.add('journal-footer');
 
+
     const goBackButton = document.createElement('button');
     goBackButton.classList.add('go-back');
     goBackButton.id = 'goBackJournalWindow';
-    goBackButton.textContent = 'Go Back';
+
+    // Create the <i> element for the arrow icon
+    const arrowIcon = document.createElement('i');
+    arrowIcon.classList.add('fas', 'fa-arrow-left');
+
+    // Append the icon to the button
+    goBackButton.appendChild(arrowIcon);
+
+    // Append the button to the journal footer
     journalFooter.appendChild(goBackButton);
+
 
     journalWindow.appendChild(journalFooter); // Append the footer to journalWindow
 
-    document.getElementById('saveJournalEntry').addEventListener('click', () => {
-        updateJournalEntry(entry.entry_id, '.journal-title-input', '.journal-textarea', '#journal-label', '/update-entry');
+    document.getElementById('saveJournalEntry').addEventListener('click', async () => {
+        try {
+            await updateJournalEntry(
+                entry.entry_id,
+                '.journal-title-input',
+                '.journal-textarea',
+                '#journal-label',
+                '/update-entry',
+                true
+            );
+        } catch (error) {
+            console.error('Error saving the journal entry:', error);
+        }
     });
     
     goBackButton.addEventListener('click', () => {
@@ -315,7 +401,6 @@ goBackPlus.addEventListener('click', () => {
     entryForm.classList.remove('active'); // Hide the day-view container
     document.getElementById('overlay').style.display = 'none'; // Hide overlay
 });
-
 
 prevMonthButton.addEventListener('click', goToPreviousMonth);
 nextMonthButton.addEventListener('click', goToNextMonth);

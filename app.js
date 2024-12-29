@@ -1,6 +1,5 @@
 // Load environment variables from .env file
 require('dotenv').config();
-
 const express = require('express');
 const mysql = require('mysql2');
 const mysqlPromise = require('mysql2/promise');
@@ -9,16 +8,28 @@ const { ulid } = require('ulid');
 const path = require('path');
 const session = require('express-session');
 const bodyParser = require('body-parser');
-
+const multer = require('multer');
+const fs = require('fs');
 const app = express();
+
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false })); // To handle form data
 app.use(bodyParser.json());
-
-// Serve static files from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Set up the MySQL connection
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+      cb(null, 'uploads/'); // Folder to save images
+  },
+  filename: (req, file, cb) => {
+      // cb(null, Date.now() + '-' + file.originalname); // Unique file name
+      const uniqueName = `${ulid()}-${file.originalname}`; 
+      cb(null, uniqueName);
+  }
+});
+
+const upload = multer({ storage });
+
 const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -26,7 +37,6 @@ const connection = mysql.createConnection({
   database: process.env.DB_NAME
 });
 
-// Set up sessions
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -82,21 +92,46 @@ app.get('/calendar', checkAuthentication, async (req, res) => {
       database: process.env.DB_NAME
     });
 
-    // Query the database for all entries related to this user using async/await
+
     const [entries] = await connection.execute(
       'SELECT entry_id, entry_date, entry_title, entry_input, entry_label FROM entries WHERE user_id = ?',
       [userId]
     );
-
-    // Close the connection for this route
+ 
+    const [journalCount] = await connection.execute(
+      'SELECT journal_count FROM users WHERE user_id = ?',
+      [userId]
+    );
+    
+    const [profileImage] = await connection.execute(
+      'SELECT username, profile_image FROM users WHERE user_id = ?',
+      [userId]
+    );
+  
     await connection.end();
-    // console.log(entries);
-    // Render the calendar page and pass the retrieved data
-    res.render('calendar-page.ejs', { entries });
+    res.render('calendar-page.ejs', { entries, journalCount, profileImage});
 
   } catch (error) {
     console.error('Error fetching entries:', error);
     res.status(500).send('Error loading the calendar');
+  }
+});
+
+// Route for form logout function
+app.get('/logout', async (req, res) => {
+  try {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error('Error destroying session:', err);
+        return res.status(500).send('Error logging out');
+      }
+      res.clearCookie('connect.sid'); // 'connect.sid' is the default session cookie name
+      currentPath = '';
+      res.redirect('/login');
+    });
+  } catch (error) {
+    console.error('Error during logout:', error);
+    res.status(500).send('Error logging out');
   }
 });
 
@@ -176,8 +211,7 @@ app.post('/signup', (req, res) => {
   );
 });
 
-// manage save button in calendar page
-app.post('/save-entry', (req, res) => {
+app.post('/save-entry', async (req, res) => {
   console.log('Received POST /save-entry');
   console.log('Request body:', req.body);
 
@@ -186,23 +220,31 @@ app.post('/save-entry', (req, res) => {
 
   // Validate that all necessary fields are provided
   if (!title || !content || !label || !date) {
-      return res.status(400).json({ success: false, message: 'All fields are required.' });
+    return res.status(400).json({ success: false, message: 'All fields are required.' });
   }
 
-  // Insert entry into the database
-  const query = `
+  try {
+    // Insert entry into the database
+    const query = `
       INSERT INTO entries (user_id, entry_date, entry_title, entry_input, entry_label)
       VALUES (?, ?, ?, ?, ?)
-  `;
-  connection.query(query, [userId, date, title, content, label], (err, results) => {
-      if (err) {
-          console.error('Error saving entry:', err);
-          return res.status(500).json({ success: false, message: 'Failed to save entry.' });
-      }
+    `;
+    await connection.promise().query(query, [userId, date, title, content, label]);
 
-      res.json({ success: true });
-      //res.redirect('/calendar');
-  });
+    // Update the journal_count in the users table
+    const updateQuery = `
+      UPDATE users
+      SET journal_count = journal_count + 1
+      WHERE user_id = ?
+    `;
+    await connection.promise().execute(updateQuery, [userId]);
+
+    // Respond with success
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error saving entry:', err);
+    res.status(500).json({ success: false, message: 'Failed to save entry.' });
+  }
 });
 
 app.post('/update-entry', (req, res) => {
@@ -228,8 +270,69 @@ app.post('/update-entry', (req, res) => {
   });
 });
 
+app.post('/upload', upload.single('profileImage'), async (req, res) => {
+    try {
+        const userId = req.session.user_id || 1; // Assuming you're using session and logged-in user
+        console.log('On upload API Call!');
+        
+        // Ensure file exists
+        if (!req.file) {
+            return res.status(400).send('No file uploaded.');
+        }
+
+        if (!userId) {
+            return res.status(400).send('User ID is required.');
+        }
+
+        const imagePath = `/uploads/${req.file.filename}`; // Path to the new uploaded image
+        console.log('File uploaded successfully:', req.file);
+        console.log('Image Path:', imagePath);
+
+        // Create a promise-based database connection
+        const connection = await mysqlPromise.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            database: process.env.DB_NAME,
+        });
+
+        // Retrieve the old profile image path from the database
+        const [[user]] = await connection.execute(
+            'SELECT profile_image FROM users WHERE user_id = ?',
+            [userId]
+        );
+
+        const oldImagePath = user?.profile_image ? path.join(__dirname, user.profile_image) : null;
+
+        // Update the user's profile image in the database
+        const query = 'UPDATE users SET profile_image = ? WHERE user_id = ?';
+        await connection.execute(query, [imagePath, userId]);
+
+        // Close the connection
+        await connection.end();
+
+        // Remove the old profile image if it exists
+        if (oldImagePath && fs.existsSync(oldImagePath)) {
+            fs.unlink(oldImagePath, (err) => {
+                if (err) {
+                    console.error('Error deleting old profile image:', err);
+                } else {
+                    console.log('Old profile image deleted:', oldImagePath);
+                }
+            });
+        }
+
+        res.send({ message: 'Profile image updated successfully', path: imagePath });
+    } catch (err) {
+        console.error('Error updating profile image:', err);
+        res.status(500).send('An error occurred while updating the profile image');
+    }
+});
+
+
 app.delete('/delete-entry/:entry_id', (req, res) => {
   const entryId = req.params.entry_id;
+  const userId = req.session.user_id || 1; // assuming you're using session and logged-in user
   
   if (!entryId) {
       return res.status(400).json({ success: false, message: 'Entry ID is required.' });
@@ -247,8 +350,17 @@ app.delete('/delete-entry/:entry_id', (req, res) => {
           return res.status(404).json({ success: false, message: 'Entry not found.' });
       }
 
-      res.json({ success: true, message: 'Entry deleted successfully.' });
+      // res.json({ success: true, message: 'Entry deleted successfully.' });
   });
+
+  const updateQuery = `
+  UPDATE users
+  SET journal_count = journal_count - 1
+  WHERE user_id = ?
+  `;
+  connection.execute(updateQuery, [userId]);
+
+  res.json({ success: true, message: 'Entry deleted successfully.' });
 });
 
 app.get('/update-day', (req, res) => {
@@ -294,39 +406,42 @@ app.get('/update-day', (req, res) => {
   });
 });
 
-app.get('/entries', (req, res) => {
+app.get('/entries', async (req, res) => {
   const userId = req.session.user_id;
 
-  // Connect to the database and fetch entries
-  const connection = mysql.createConnection({
+  try {
+    // Create a promise-based connection for better handling
+    const connection = await mysqlPromise.createConnection({
       host: process.env.DB_HOST,
       user: process.env.DB_USER,
       password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME
-  });
+      database: process.env.DB_NAME,
+    });
 
-  connection.query(
+    // Query for fetching the entries
+    const [entries] = await connection.execute(
       'SELECT entry_id, entry_date, entry_title, entry_input, entry_label FROM entries WHERE user_id = ?',
-      [userId],
-      (err, results) => {
-          if (err) {
-              console.error('Error fetching entries:', err);
-              return res.status(500).json({ message: 'Error fetching entries' });
-          }
+      [userId]
+    );
 
-          // Return the entries as JSON
-          res.json({ entries: results });
-      }
-  );
+    // Query for fetching the journal_count
+    const [journal_count ] = await connection.execute(
+      'SELECT journal_count FROM users WHERE user_id = ?',
+      [userId]
+    );
 
-  // Close the connection after the query
-  connection.end(err => {
-      if (err) {
-          console.error('Error closing the database connection:', err);
-      }
-  });
+    // Close the connection
+    await connection.end();
+
+    // Send both the entries and journal_count in the response
+    res.json({ entries, journal_count });
+  } catch (err) {
+    console.error('Error fetching data:', err);
+    res.status(500).json({ message: 'Error fetching data' });
+  }
 });
 
+app.use('/uploads', express.static('uploads'));
 
 // Start the server
 const PORT = process.env.PORT || 3000;

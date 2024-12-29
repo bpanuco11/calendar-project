@@ -7,10 +7,15 @@
     <link rel="stylesheet" href="../css/calendar-front.css">
     <link rel="stylesheet" href="../css/day-view.css">
     <link rel="stylesheet" href="../css/entry-view.css">
+    <link rel="stylesheet" href="../css/profile.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tiny5&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400..700&family=Tiny5&display=swap');
+    </style>
 
 </head>
-<body background="../assets/purple2.gif">
+<body background='../assets/green2.gif'>
 
     <div class="header-container">
         <div class="calendar-title">RetroPug </div>
@@ -24,14 +29,72 @@
             <div class="search-bar-inner">
                 <input type="text" placeholder="Search..." class="search-bar">
                 <button class="search-button">
-                    <i class="fas fa-search"></i> 
+                   <img src="../assets/lupa2.png" alt="Search Icon" class="search-icon">
                 </button>
             </div>
         </div>
         <div class="profile-container">
-            <img src="../assets/pug-doggy.jpg" alt="Profile" class="profile-pic">
+            <img src="../assets/pug-doggy.jpg" alt="Profile" id="profileImage" class="profile-pic">
         </div>
     </div>
+
+    <div class="dropdown-container" id="dropdownContainer">
+        <button class="close-button" id="closeButton" aria-label="Close">
+            <img src="../assets/exit.png" alt="Exit" class="exit-icon">
+        </button>
+        <h2 class="dropdown-header" id="username-header">Username</h2>
+        <img src="../assets/pug-doggy.jpg" alt="Profile" id="pictureOption" class="picture-option">
+        <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+        <hr class="divider">
+        <p class="total-journals" id="journalTotal">Total Journals: X</p>
+        <button class="logout-button" id="logoutButton" aria-label="Log out">
+            <img src="../assets/log-out.png" alt="Log Out" class="logout-icon">
+        </button>
+    </div>
+    
+
+    <div class="search-results-container" id="searchResultsContainer">
+        <div class="search-results-header">
+            <header class="search-query" id="searchQuery"></header>
+        </div>
+        <div class="query-entries">
+            <div class="query-entry">
+                <span class="entry-title">Title Here1</span>
+                <button class="entry-open">Open</button>
+            </div> 
+        </div> 
+        <button class="go-back" id="closeSearchView">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+    </div>
+
+    <div class="search-journal-window" id="searchJournalWindow">
+        <div class="search-journal-header">
+            <input type="text" class="search-journal-title-input" id="searchJournalTitle" placeholder="Title"> <!-- Editable title -->
+            <button class="save-entry" id="saveSearchJournalEntry">
+                <i class="fas fa-save"></i>
+            </button>
+        </div>
+        <div class="search-journal-content">
+            <textarea class="search-journal-textarea" id="searchJournalContent" rows="10"  placeholder="Write your entry..."></textarea> <!-- Editable content -->
+        </div>
+        <select id="search-journal-label">
+            <option value="task" selected>Task</option>
+            <option value="important">Important</option>
+            <option value="meeting">Meeting</option>
+            <option value="birthday">Birthday</option>
+            <option value="personal">Personal</option>
+            <option value="holiday">Holiday</option>
+            <option value="appointment">Appointment</option>
+            <option value="deadline">Deadline</option>
+        </select>
+        <div class="search-journal-footer">
+            <button class="go-back" id="searchgoBack">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+        </div>
+    </div>
+
     <div class="calendar-container">
         <div class="calendar">
             <div class="calendar-header">
@@ -44,40 +107,41 @@
             </div>
         </div>
     </div>
+    
     <div class="left-section-container">
         <div class="labels-container-left">
             <div class="label-item">
-                <input type="checkbox" id="important">
+                <input type="checkbox" id="important" checked>
                 <label for="important">Important</label>
             </div>
             <div class="label-item">
-                <input type="checkbox" id="meeting">
+                <input type="checkbox" id="meeting" checked>
                 <label for="meeting">Meeting</label>
             </div>
             <div class="label-item">
-                <input type="checkbox" id="task">
+                <input type="checkbox" id="task" checked>
                 <label for="task">Task</label>
             </div>
             <div class="label-item">
-                <input type="checkbox" id="birthday">
+                <input type="checkbox" id="birthday" checked>
                 <label for="birthday">Birthday</label>
             </div>
         </div>
         <div class="labels-container-right">
             <div class="label-item">
-                <input type="checkbox" id="personal">
+                <input type="checkbox" id="personal" checked>
                 <label for="personal">Personal</label>
             </div>
             <div class="label-item">
-                <input type="checkbox" id="holiday">
+                <input type="checkbox" id="holiday" checked>
                 <label for="holiday">Holiday</label>
             </div>
             <div class="label-item">
-                <input type="checkbox" id="appointment">
+                <input type="checkbox" id="appointment" checked>
                 <label for="appointment">Appointment</label>
             </div>
             <div class="label-item">
-                <input type="checkbox" id="deadline">
+                <input type="checkbox" id="deadline" checked>
                 <label for="deadline">Deadline</label>
             </div>
         </div>
@@ -172,15 +236,15 @@
             <input type="date" id="entryDatePlus" class="newEntryDatePlus" />
         </div>
         <div class="journal-header">
-            <input type="text" class="newJournal-title-input" placeholder="Title" />
+            <input type="text" class="newJournal-title-inputPlus" placeholder="Title" />
             <button class="save-entry" id="saveNewEntryPlus">
                 <i class="fas fa-save"></i>
             </button>
         </div>
         <div class="journal-content">
-            <textarea class="newJournal-textarea" placeholder="Write your entry..."></textarea>
+            <textarea class="newJournal-textareaPlus" placeholder="Write your entry..."></textarea>
         </div>
-        <select id="newJournal-label">
+        <select id="newJournal-labelPlus">
             <option value="task" selected>Task</option>
             <option value="important">Important</option>
             <option value="meeting">Meeting</option>
@@ -201,9 +265,14 @@
 
     <script>
         var entries = JSON.parse(`<%- JSON.stringify(entries) %>`);
+        var journalCount = JSON.parse(`<%- JSON.stringify(journalCount) %>`);
+        var prfleImgeSql = JSON.parse(`<%- JSON.stringify(profileImage) %>`);
     </script>
-    
+
     <script src="/js/calendar-generator.js"></script>
+    <script src="/js/profile.js"></script>
+    <script src="/js/search-journal.js"></script>
     <script src="/js/calendar-post-req.js"></script>
+    <script src="/js/calendar-background.js"></script>
 </body>
 </html>

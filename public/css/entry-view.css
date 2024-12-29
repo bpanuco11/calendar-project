@@ -1,4 +1,4 @@
-.journal-window {
+.journal-window, .search-journal-window{
     display: none;
     position: fixed;
     top: 50%;
@@ -16,11 +16,13 @@
     width: 60%;
     overflow: auto;
 }
-.journal-window.active {
+.journal-window.active, .search-journal-window.active{
     display: flex;
+    background-color: rgb(106, 163, 209);
+    border: 2px solid darkslateblue;
 }
 
-.journal-header {
+.journal-header, .search-journal-header {
     display: flex;
     flex-direction: row; 
     align-items: center;
@@ -29,16 +31,17 @@
     padding-bottom: 10px;
     border-bottom: 2px solid rgba(0, 0, 0, 0.2);
 }
-.journal-title-input, .newJournal-title-input{
+.journal-title-input, .newJournal-title-input, .newJournal-title-inputPlus,
+ .search-journal-title-input{
     flex-grow: 1;
     font-size: 18px;
     border: 1px solid #ccc;
     padding: 5px;
     width: 80%; 
-    font-family: 'Press Start 2P', cursive;
+    font-family: "Tiny5", serif;
 }
 .save-entry{
-    font-family: 'Press Start 2P', cursive;
+    font-family: "Tiny5", serif;
     background-color: rgba(100, 108, 181, 0.8);
     border: 1px solid black;
     color: white;
@@ -50,7 +53,7 @@
 .save-entry:hover{
     background-color: rgba(100, 108, 181, 1);
 }
-.journal-content {
+.journal-content, .search-journal-content {
     width: 100%;
     padding: 10px 0;
     display: flex;
@@ -60,25 +63,26 @@
     height: 100%;
     overflow: auto;
 }
-.journal-textarea, .newJournal-textarea, .newJournal-textarea-plus {
+.journal-textarea, .newJournal-textarea, .newJournal-textareaPlus, .search-journal-textarea {
     width: 100%;
     height: 90%;
     border: 1px solid #ccc;
     padding: 10px;
-    font-family: 'Press Start 2P', cursive;
+    font-family: "Tiny5", serif;
     resize: none; 
 }
-#journal-label{
+#journal-label, #newJournal-label, #newJournal-labelPlus, #search-journal-label{
     margin-bottom: 2%;
+    font-family: "Tiny5", serif;
 }
-.journal-footer {
+.journal-footer, .search-journal-footer {
     width: 100%;
     display: flex;
     justify-content: center;
     margin-top: 15px;
 }
 .go-back{
-    font-family: 'Press Start 2P', cursive;
+    font-family: "Tiny5", serif;
     padding: 4px 20px;
     background-color: rgb(94, 81, 179);
     color: white;
@@ -99,7 +103,6 @@
     display: none; 
     flex-direction: column;
     align-items: center;
-    background-color: #fff;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 8px;
@@ -110,6 +113,8 @@
 }
 .new-entry-window.active, .add-new-entry-plus.active {
     display: flex;
+    background-color: rgb(106, 163, 209);
+    border: 2px solid darkslateblue;
 }
 .entry-select-date {
     width: 100%;
@@ -118,6 +123,7 @@
 }
 .newEntryDatePlus {
     font-size: 14px;
+    font-family: "Tiny5", serif;
     text-align: center;
     margin-left: 2%;
     margin-bottom: 2%;
@@ -126,5 +132,6 @@
 .entry-select-date label {
     font-size: 1.2rem; 
     color: #6c757d;
+    color: black;
     margin-bottom: 2%;
 }
