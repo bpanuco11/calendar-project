@@ -1,4 +1,4 @@
-function saveJournalEntry(titleInputSelector, textareaSelector, labelSelector, saveUrl) {
+async function saveJournalEntry(titleInputSelector, textareaSelector, labelSelector, saveUrl) {
     const journalTitleInput = document.querySelector(titleInputSelector);
     const journalTextarea = document.querySelector(textareaSelector);
     const journalLabel = document.querySelector(labelSelector);
@@ -20,36 +20,41 @@ function saveJournalEntry(titleInputSelector, textareaSelector, labelSelector, s
         return;
     }
 
-    // Send the data to the server
-    fetch(saveUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            title: title,
-            content: content,
-            label: label,
-            date: selectedDate
-        })
-    }).then(response => response.json())
-    .then(data => {
+    try {
+        // Send the data to the server
+        const response = await fetch(saveUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                title: title,
+                content: content,
+                label: label,
+                date: selectedDate
+            })
+        });
+
+        const data = await response.json();
+
         if (data.success) {
             alert('Journal entry saved successfully!');
-            // Optionally, close the journal window or clear the form
-            journalTitleInput.value = '';
-            journalTitleInput.placeholder = 'Title...'; // Reset the placeholder for title
-            journalTextarea.value = '';
-            journalTextarea.placeholder = 'Content...'; // Reset the placeholder for content
-            journalLabel.value = 'task'; // Optionally reset label to a default value
 
-            //window.location.href = '/calendar';
-            updateDayView(selectedDate, document.getElementById("newEntryWindow"));
-            updateEntryData();
+            journalTitleInput.value = '';
+            journalTitleInput.placeholder = 'Title...';
+            journalTextarea.value = '';
+            journalTextarea.placeholder = 'Content...';
+            journalLabel.value = 'task';
+
+            await updateDayView(selectedDate, document.getElementById("newEntryWindow"));
+            await updateEntryData();
         } else {
             alert('Failed to save the journal entry.');
         }
-    });
+    } catch (error) {
+        console.error('Error saving journal entry:', error);
+        alert('An error occurred while saving the journal entry.');
+    }
 }
 async function updateDayView(selectedDate, otherWindow) {
     try {
@@ -61,7 +66,6 @@ async function updateDayView(selectedDate, otherWindow) {
         }
 
         const data = await response.json();
-
         // Update the day view date and entries container
         const dayViewDateElement = document.getElementById('dayViewDate');
         const dayViewEntriesContainer = document.querySelector('.day-view-entries');
@@ -102,7 +106,8 @@ async function updateDayView(selectedDate, otherWindow) {
                 deleteIcon.classList.add('fas', 'fa-trash');
                 deleteButton.appendChild(deleteIcon);
                 entryDiv.appendChild(deleteButton);
-                deleteButton.addEventListener('click', () => deleteJournalEntry(entry.entry_id, '/delete-entry'));
+                deleteButton.addEventListener('click', async () => 
+                    await deleteJournalEntry(entry.entry_id, '/delete-entry', true));
 
                 dayViewEntriesContainer.appendChild(entryDiv);
             }
@@ -120,7 +125,7 @@ async function updateDayView(selectedDate, otherWindow) {
 }
 async function updateJournalEntry(entryId, titleSelector, inputSelector, labelSelector, url, isUpdateDayView) {
     try {
-        // Gather the values from the input fields
+        
         const entryTitle = document.querySelector(titleSelector).value;
         const entryInput = document.querySelector(inputSelector).value;
         const entryLabel = document.querySelector(labelSelector).value;
@@ -157,10 +162,9 @@ async function updateJournalEntry(entryId, titleSelector, inputSelector, labelSe
             alert('Journal entry saved successfully!');
 
             if (isUpdateDayView) {
-                await updateDayView(selectedDate, journalWindow); // Ensure it supports async
+                await updateDayView(selectedDate, journalWindow); 
             }
-            await updateEntryData(); // Ensure it supports async
-            console.log('2:', entries);
+            await updateEntryData(); 
         } else {
             alert('Failed to save the journal entry.');
         }
@@ -169,16 +173,7 @@ async function updateJournalEntry(entryId, titleSelector, inputSelector, labelSe
         alert('An error occurred while saving the journal entry.');
     }
 }
-function deleteJournalEntry(entryId, deleteUrl) {
-    const dayViewElement = document.getElementById('dayViewDate');
-    const dayViewDate = dayViewElement ? dayViewElement.textContent.trim() : '';
-    const year = window.displayYear;
-    const month = window.displayMonth + 1; // starts at 0
-    const dayNumber = parseInt(dayViewDate.split(' ')[1], 10);
-    const formattedMonth = month.toString().padStart(2, '0');
-    const formattedDay = dayNumber.toString().padStart(2, '0');
-    const selectedDate = `${year}-${formattedMonth}-${formattedDay}`;
-
+async function deleteJournalEntry(entryId, deleteUrl, isUpdateDayView) {
     if (!entryId) {
         alert('Entry ID is required to delete an entry.');
         return;
@@ -189,34 +184,43 @@ function deleteJournalEntry(entryId, deleteUrl) {
         return;
     }
 
-    // Send DELETE request to the server
-    fetch(`${deleteUrl}/${entryId}`, {
-        method: 'DELETE'
-    })
-    .then(response => response.json())
-    .then(data => {
+    try {
+        // Send DELETE request to the server
+        const response = await fetch(`${deleteUrl}/${entryId}`, {
+            method: 'DELETE'
+        });
+        const data = await response.json();
+
         if (data.success) {
             alert('Journal entry deleted successfully!');
-            
-            //window.location.href = '/calendar';
-            updateDayView(selectedDate, null);
-            updateEntryData();
+
+            if (isUpdateDayView) {
+                const dayViewElement = document.getElementById('dayViewDate');
+                const dayViewDate = dayViewElement ? dayViewElement.textContent.trim() : '';
+                const year = window.displayYear;
+                const month = window.displayMonth + 1; // starts at 0
+                const dayNumber = parseInt(dayViewDate.split(' ')[1], 10);
+                const formattedMonth = month.toString().padStart(2, '0');
+                const formattedDay = dayNumber.toString().padStart(2, '0');
+                const selectedDate = `${year}-${formattedMonth}-${formattedDay}`;
+                await updateDayView(selectedDate, null);
+            }
+
+            await updateEntryData();
         } else {
             alert('Failed to delete the journal entry: ' + data.message);
         }
-    })
-    .catch(error => {
+    } catch (error) {
         console.error('Error deleting journal entry:', error);
         alert('An error occurred while deleting the journal entry.');
-    });
+    }
 }
 async function updateEntryData() {
     try {
-        const response = await fetch('/entries'); // Wait for fetch to complete
+        const response = await fetch('/entries');
         const data = await response.json();
         entries = JSON.parse(JSON.stringify(data.entries));
         journalCount = JSON.parse(JSON.stringify(data.journal_count));
-        console.log('1:', entries);
     } catch (error) {
         console.error('Error fetching updated entries:', error);
     }
@@ -225,12 +229,12 @@ async function saveJournalEntryPlus(titleInputSelector, textareaSelector, labelS
     const journalTitleInput = document.querySelector(titleInputSelector);
     const journalTextarea = document.querySelector(textareaSelector);
     const journalLabel = document.querySelector(labelSelector);
-    const journalDateInput = document.querySelector(dateInputSelector); // Get the date input value
+    const journalDateInput = document.querySelector(dateInputSelector); 
 
     const title = journalTitleInput.value.trim();
     const content = journalTextarea.value.trim();
     const label = journalLabel.value;
-    const date = journalDateInput.value; // Use the selected date
+    const date = journalDateInput.value; 
 
     // Validate the inputs
     if (!title || !content) {
@@ -260,15 +264,15 @@ async function saveJournalEntryPlus(titleInputSelector, textareaSelector, labelS
         const data = await response.json();
 
         if (data.success) {
-            await updateEntryData(); // Wait for updateEntryData to complete
+            await updateEntryData(); 
             console.log('Server 2:', entries);
             alert('Journal entry saved successfully!');
             
-            // Optionally, clear the form
+            
             journalTitleInput.value = '';
             journalTextarea.value = '';
-            journalLabel.value = 'task'; // Reset the label to default
-            journalDateInput.value = ''; // Clear the date
+            journalLabel.value = 'task';
+            journalDateInput.value = ''; 
 
         } else {
             alert('Failed to save the journal entry.');

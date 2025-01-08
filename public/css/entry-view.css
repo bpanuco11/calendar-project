@@ -40,7 +40,7 @@
     width: 80%; 
     font-family: "Tiny5", serif;
 }
-.save-entry{
+.save-entry, .delete-entry{
     font-family: "Tiny5", serif;
     background-color: rgba(100, 108, 181, 0.8);
     border: 1px solid black;
@@ -50,8 +50,9 @@
     transition: background-color 0.3s ease;
     margin-left: 1%;
 }
-.save-entry:hover{
-    background-color: rgba(100, 108, 181, 1);
+.save-entry:hover, .delete-entry:hover{
+    background-color: rgb(40, 54, 181, .8);
+    color: black;
 }
 .journal-content, .search-journal-content {
     width: 100%;

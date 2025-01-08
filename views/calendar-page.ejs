@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calendar</title>
+    <title>PugTracks - Calendar</title>
+    <link rel="icon" type="image/png" href="assets/keshote.png">
     <link rel="stylesheet" href="../css/calendar-front.css">
     <link rel="stylesheet" href="../css/day-view.css">
     <link rel="stylesheet" href="../css/entry-view.css">
@@ -17,9 +18,12 @@
 </head>
 <body background='../assets/green2.gif'>
 
+
     <div class="header-container">
-        <div class="calendar-title">RetroPug </div>
-        <img src="../assets/keshote.png" alt="Calendar Image" class="calendar-image">
+        <div class="calendar-title">PugTracks </div>
+        <img src="../assets/keshote.png" alt="Calendar Image" class="calendar-image" id="calendarImage">
+        <audio id="calendar-audio" src="../assets/calendar-music.mp3"></audio>
+
         <div class="header-button-container">
             <button class="button" id="prevMonth-header">&lt;</button>
             <button class="button" id="nextMonth-header">&gt;</button>

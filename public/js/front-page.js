@@ -1,4 +1,3 @@
-// Function to handle image switching
 function handleImageSwitching(elementId, images, interval = 5000) {
     const backgroundImage = document.getElementById(elementId);
     if (backgroundImage) {
@@ -10,7 +9,6 @@ function handleImageSwitching(elementId, images, interval = 5000) {
     }
 }
 
-// Function to handle closing error message
 function handleCloseButton(buttonId, messageId) {
     const closeBtn = document.getElementById(buttonId);
     if (closeBtn) {
@@ -23,7 +21,6 @@ function handleCloseButton(buttonId, messageId) {
     }
 }
 
-// Function to handle audio control
 function handleAudioControl(audioId, iconId, initialMuted = false) {
     const backgroundAudio = document.getElementById(audioId);
     const audioIcon = document.getElementById(iconId);

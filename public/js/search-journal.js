@@ -39,11 +39,19 @@ function openSearchEntry(entry) {
   const saveButton = document.createElement('button');
   saveButton.classList.add('save-entry');
   saveButton.id = 'saveSearchJournalEntry';
-
   const saveIcon = document.createElement('i');
   saveIcon.classList.add('fas', 'fa-save'); 
   saveButton.appendChild(saveIcon);
   journalHeader.appendChild(saveButton);
+
+  const deleteButton = document.createElement('button');
+  deleteButton.classList.add('delete-entry');
+  deleteButton.id = 'deleteSearchJournalEntry';
+  const deleteIcon = document.createElement('i');
+  deleteIcon.classList.add('fas', 'fa-trash'); 
+  deleteButton.appendChild(deleteIcon);
+  journalHeader.appendChild(deleteButton);
+
   searchJournalWindow.appendChild(journalHeader); 
 
   const journalContent = document.createElement('div');
@@ -91,7 +99,8 @@ function openSearchEntry(entry) {
   journalFooter.appendChild(goBackButton);
   searchJournalWindow.appendChild(journalFooter); 
 
-  document.getElementById('saveSearchJournalEntry').addEventListener('click', async () => {
+  document.getElementById('saveSearchJournalEntry').addEventListener('click', async () => 
+    {
     await updateJournalEntry(
         entry.entry_id, 
         '.search-journal-title-input', 
@@ -102,10 +111,16 @@ function openSearchEntry(entry) {
     );
     searchJournalWindow.classList.remove('active');
     document.getElementById('overlay').style.display = 'none';
-    renderLargeCalendar(); // Ensure renderLargeCalendar supports async if needed
+    renderLargeCalendar(); 
   });
 
-  
+  deleteButton.addEventListener('click', async () => {
+    await deleteJournalEntry(entry.entry_id, '/delete-entry', false)
+    searchJournalWindow.classList.remove('active');
+    document.getElementById('overlay').style.display = 'none';
+    renderLargeCalendar();
+  });
+
   goBackButton.addEventListener('click', () => {
       searchJournalWindow.classList.remove('active');
       document.getElementById('overlay').style.display = 'none'; 
@@ -203,7 +218,7 @@ searchButton.addEventListener('click', function() {
 
 closeSearchView.addEventListener('click', () => { 
   searchResultsContainer.classList.remove('active'); 
-  document.getElementById('overlay').style.display = 'none'; // Hide overlay
+  document.getElementById('overlay').style.display = 'none'; 
 });
 
 

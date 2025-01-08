@@ -11,6 +11,7 @@ html, body {
 
 body {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
@@ -25,65 +26,71 @@ body {
 
 #login-page, #signup-page {
     font-family: 'Press Start 2P', cursive;
-    width: 45%; /* Adjust the width percentage */
-    height: 60%; /* Adjust the height percentage */
-    padding: 2%;
-    background-color: rgba(100, 108, 181, 0.8); /* Added alpha for transparency */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 45%; 
+    height: 60%; 
+    background-color: rgba(100, 108, 181, 0.8); 
     border: 4px solid darkslateblue;
-    border-radius: 15px; /* Adjust this value as needed */
-    position: relative;
+    border-radius: 15px; 
+    box-sizing: border-box;
+    overflow: auto;
 }
-
 #signup-page {
     background-color: rgba(112, 167, 107, 0.8);
     border: 4px solid darkgrey;
 }
-
-#login-lildude-background, #signup-lildude-background {
-    position: absolute;
-    top: -75px; /* Adjust this value as needed */
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: -1;
-    width: 100px; /* Adjust size as needed */
-    height: auto;
-    opacity: 0.7; /* Optional: make the image semi-transparent */
-}
-.login-form, .signup-form {
+.credentials{
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-around; 
+    width: 70%; 
+    border-radius: 10px;
+    justify-content: space-around;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+.credentials label {
+    font-size: clamp(12px, 1.5vw, 36px); /* Responsive font size */
+    text-align: center; 
+    display: block;
+}
+
+.credentials input {
+    font-family: 'Press Start 2P', cursive;
     width: 100%;
-    height: 100%; 
-    border-radius: 10px; 
-}
-.login-form label, .signup-form label {
-   font-size: 1em;
-}
-
-.login-form input, .signup-form input {
-    margin-bottom: 10%;
+    height: 60%;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid black;
+    border-radius: 2px;
+    box-sizing: border-box;
     background-color: rgb(192, 230, 220);
-    border-color: black;
-    height: 10%;
-    width: 70%;
+}
+.credentials input:hover{
+    background-color: yellow;
 }
 
-.login-form input:hover, .signup-form input:hover {
-    background-color: rgb(226, 232, 48);
+.input-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 20%;
 }
 
-.login-form input[type="text"],
-.login-form input[type="password"],
-.signup-form input[type="text"],
-.signup-form input[type="password"] {
+.login-action-buttons{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; 
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+#login-button, #sign-button, #signup-button, #back-button{
     font-family: 'Press Start 2P', cursive;
-}
-
-#login-page button, #signup-button, #back-button {
-    margin-bottom: 5%;
-    font-family: 'Press Start 2P', cursive;
+    font-size: clamp(.6rem, 1.2vw, 2rem);
     border: 2px solid black;
     padding: 0.4em .8em;
     background-color: rgb(192, 230, 220);
@@ -92,19 +99,40 @@ body {
     outline: none;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s;
+    width: auto;  
+    height: auto;
+    align-self: center;
 }
+
+#sign-button, #back-button{
+   margin-bottom: 5%;
+}
+
+.cat-icon{
+    display: flex;                
+    justify-content: center;     
+    align-items: flex-end;  
+    width: 45%;
+    height: 10%;
+}
+#login-lildude-background, #signup-lildude-background {
+    max-width: 100%; 
+    height: 100%;                 
+}
+
+.login-form input:hover, .signup-form input:hover {
+    background-color: rgb(226, 232, 48);
+}
+.login-form input[type="text"],
+.login-form input[type="password"],
+.signup-form input[type="text"],
+.signup-form input[type="password"] {
+    font-family: 'Press Start 2P', cursive;
+}
+
 
 #login-page button:hover, #signup-page button:hover, #back-button button:hover  {
     background-color: yellow;
-}
-#sign-button, #back-button {
-    position: absolute;
-    top: 87%; /* Space from the bottom of the #login-page container */
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 0; /* Remove default margin */
-    width: auto;
-    height: auto;
 }
 .error-message {
     text-align: center;
@@ -113,13 +141,12 @@ body {
     border: 1px solid #cc0000;
     padding: 10px;
     position: absolute;
-    top: 5px; /* Adjust this value to move the box down or up from the top */
+    top: 5px; 
     left: 50%;
     transform: translateX(-50%);
     border-radius: 5px;
-    z-index: 1000; /* Ensure the error box is on top of other content */
-    font-size: clamp(8px, 1.8vw, 34px); /* Responsive font size */
-    /*width: clamp(200px, 65%, 400px); */
+    z-index: 1000; 
+    font-size: clamp(8px, 1.8vw, 34px); 
     width: auto;
 }
 .close-btn {
@@ -128,247 +155,33 @@ body {
     right: 10px;
     background-color: transparent;
     border: none;
-    font-size: clamp(8px, 1.8vw, 34px); /* Responsive font size */
+    font-size: clamp(8px, 1.8vw, 34px); 
     cursor: pointer;
     color: #cc0000;
 }
 .close-btn:hover {
     color: #ff0000;
 }
-
 #audio-control {
-    position: fixed; /* Fixes the icon to the viewport */
-    top: 20px; /* Distance from the top of the viewport */
-    right: 20px; /* Distance from the right side of the viewport */
-    cursor: pointer; /* Shows a pointer cursor when hovering over the icon */
-    z-index: 1000; /* Ensures the icon is above other elements */
+    position: fixed; 
+    top: 20px; 
+    right: 20px; 
+    cursor: pointer; 
+    z-index: 1000; 
 }
 
 #audio-control img {
-    width: 32px; /* Width of the icon */
-    height: 32px; /* Height of the icon */
+    width: 32px; 
+    height: 32px; 
 }
 
 #copyright {
     position: absolute;
-    bottom: 10px; /* Adjust as needed */
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    font-family: 'Press Start 2P', cursive; /* Use the same font as other elements */
-    color: yellow; /* Adjust color based on your design */
+    font-family: 'Press Start 2P', cursive; 
+    color: yellow; 
     font-size: clamp(10px, 1.2vw, 28px);
     text-align: center;
-}
-
-@media (max-width: 320px) {
-    .login-form, .signup-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: start; 
-        width: 100%;
-        height: 100%; 
-    }
-    #usernameLabel{
-        margin-top: 30%;
-    }
-    #passwordLabel{
-        margin-top: 20%;
-    }
-    .login-form input, .signup-form input {
-        height: 8%;
-        width: 70%;
-        margin-bottom: 20%;
-    }
-    .login-form label, .signup-form label {
-        font-size: .58em; /* Larger size for medium screens */
-    }
-    #login-page button, #signup-button, #back-button {
-        font-size: .5em;
-        letter-spacing: .2em;
-        width: 50px;
-        height: 25px;
-    }
-    #sign-button{
-        top: 80%;
-    }
-    #signup-button{
-        width: auto;
-        height: auto;
-    }
-    #login-lildude-background, #signup-lildude-background {
-        position: absolute;
-        top: -65px; /* Adjust this value as needed */
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: -1;
-        width: 90px; /* Adjust size as needed */
-        height: auto;
-        opacity: 0.7; /* Optional: make the image semi-transparent */
-    }
-}
-@media (min-width: 321px) and (max-width: 376px)  {
-    .login-form, .signup-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: start; 
-        width: 100%;
-        height: 100%; 
-    }
-    #usernameLabel{
-        margin-top: 30%;
-    }
-    #passwordLabel{
-        margin-top: 20%;
-    }
-    .login-form input, .signup-form input {
-        height: 8%;
-        width: 70%;
-        margin-bottom: 20%;
-    }
-    .login-form label, .signup-form label {
-        font-size: .58em; /* Larger size for medium screens */
-    }
-    #login-page button, #signup-button, #back-button {
-        font-size: .5em;
-        letter-spacing: .2em;
-        width: 50px;
-        height: 25px;
-    }
-    #sign-button{
-        top: 86%;
-    }
-    #signup-button{
-        width: auto;
-        height: auto;
-    }
-}
-@media (min-width: 376px) and (max-width: 426px){
-    .login-form, .signup-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: start; 
-        width: 100%;
-        height: 100%; 
-    }
-    #usernameLabel{
-        margin-top: 20%;
-    }
-    #passwordLabel{
-        margin-top: 10%;
-    }
-    .login-form input, .signup-form input {
-        height: 8%;
-        width: 70%;
-        margin-bottom: 20%;
-    }
-    .login-form label, .signup-form label {
-        font-size: .58em; /* Larger size for medium screens */
-    }
-    #login-page button, #signup-button, #back-button {
-        font-size: .5em;
-        letter-spacing: .2em;
-        width: 50px;
-        height: 25px;
-    }
-    #sign-button{
-        top: 86%;
-    }
-    #login-button{
-        margin-top: 5%;
-    }
-    #signup-button{
-        width: auto;
-        height: auto;
-    }
-}
-@media (min-width: 426px) and (max-width: 769px){
-    .login-form, .signup-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: start; 
-        width: 100%;
-        height: 100%; 
-    }
-    #usernameLabel{
-        margin-top: 5%;
-    }
-    #passwordLabel{
-        margin-top: 0%;
-    }
-    .login-form input, .signup-form input {
-        height: 8%;
-        width: 70%;
-        margin-bottom: 12%;
-    }
-    .login-form label, .signup-form label {
-        font-size: .9em; /* Larger size for medium screens */
-    }
-    #login-page button, #signup-button, #back-button {
-        font-size: .5em;
-        letter-spacing: .2em;
-        width: auto;
-        height: auto;
-    }
-    #sign-button{
-        top: 86%;
-    }
-    #login-button{
-        margin-top: 5%;
-    }
-    #signup-button{
-        width: auto;
-        height: auto;
-    }
-}
-@media (min-width: 769px) and (max-width: 1025px){
-    .login-form label, .signup-form label {
-        font-size: 1.2em; /* Larger size for large screens */
-    }
-    #signup-button{
-        width: auto;
-        height: auto;
-    }
-}
-@media (min-width: 1025px) and (max-width: 1441px){
-    .login-form label, .signup-form label {
-        font-size: 1.3em; /* Larger size for large screens */
-    }
-    #login-page button, #signup-button, #back-button {
-        font-size: 1em;
-        letter-spacing: .2em;
-        width: auto;
-        height: auto;
-    }
-    #signup-button{
-        width: auto;
-        height: auto;
-    }
-}
-@media (min-width: 1441px) and (max-width: 2561px){
-    .login-form label, .signup-form label {
-        font-size: 1.7em; /* Larger size for large screens */
-    }
-    #login-page button, #signup-button, #back-button {
-        font-size: 1.6em;
-        letter-spacing: .2em;
-        width: auto;
-        height: auto;
-    }
-    #signup-button{
-        width: auto;
-        height: auto;
-    }
-    #login-lildude-background, #signup-lildude-background {
-        position: absolute;
-        top: -110px; /* Adjust this value as needed */
-        width: 150px; /* Adjust size as needed */
-    }
-    #audio-control img {
-        width: 72px; /* Width of the icon */
-        height: 72px; /* Height of the icon */
-    }
 }

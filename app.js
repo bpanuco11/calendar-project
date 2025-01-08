@@ -63,26 +63,33 @@ function checkAuthentication(req, res, next) {
   }
 }
 
+// Middleware to prevent caching for authenticated routes
+function preventCache(req, res, next) {
+  res.set('Cache-Control', 'no-store'); // Prevent caching
+  res.set('Pragma', 'no-cache'); // For HTTP/1.0 compatibility
+  res.set('Expires', '0'); // Immediately expire any cached content
+  next();
+}
+
 // Route for login page
 app.get('/login', (req, res) => {
-  currentPath = '/login'; // Update the global variable
+  currentPath = '/login'; 
   res.render('login-page.ejs', { error: null });
   console.log('Login page loaded correctly');
 });
 
 // Route for signup page
 app.get('/signup', (req, res) => {
-  currentPath = '/signup'; // Update the global variable
+  currentPath = '/signup'; 
   res.render('signup-page.ejs', { error: null });
   console.log('Signup page loaded correctly');
 });
 
 // Route for calendar page
-app.get('/calendar', checkAuthentication, async (req, res) => {
-  currentPath = '/calendar'; // Update the global variable
+app.get('/calendar', checkAuthentication, preventCache, async (req, res) => {
+  currentPath = '/calendar'; 
   const userId = req.session.user_id;
-
-  // res.render('calendar-page.ejs', {error: null});
+``
   try {
     // Create a promise-based connection for this route
     const connection = await mysqlPromise.createConnection({
@@ -138,6 +145,7 @@ app.get('/logout', async (req, res) => {
 // Handle form submission for login
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
+  console.log(req.body)
   console.log('Login attempt:', username);
 
   connection.query(
@@ -329,7 +337,6 @@ app.post('/upload', upload.single('profileImage'), async (req, res) => {
     }
 });
 
-
 app.delete('/delete-entry/:entry_id', (req, res) => {
   const entryId = req.params.entry_id;
   const userId = req.session.user_id || 1; // assuming you're using session and logged-in user
@@ -363,47 +370,36 @@ app.delete('/delete-entry/:entry_id', (req, res) => {
   res.json({ success: true, message: 'Entry deleted successfully.' });
 });
 
-app.get('/update-day', (req, res) => {
+app.get('/update-day', async (req, res) => {
   const { date } = req.query;
   const userId = req.session.user_id;
 
-  // Create the MySQL connection
-  const connection = mysql.createConnection({
-      host: process.env.DB_HOST,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
-      database: process.env.DB_NAME
-  });
-
-  // Connect to the database and execute the query
-  connection.connect(err => {
-      if (err) {
-          console.error('Error connecting to the database:', err);
-          return res.status(500).json({ message: 'Error connecting to the database' });
-      }
-
-      // Query the database for the user's entries on the specific date
-      connection.query(
-          'SELECT entry_id, entry_date, entry_title, entry_input, entry_label FROM entries WHERE user_id = ? AND entry_date = ?',
-          [userId, date],
-          (err, results) => {
-              if (err) {
-                  console.error('Error fetching entries:', err);
-                  return res.status(500).json({ message: 'Error fetching entries' });
-              }
-
-              // Return the entries as a JSON response
-              res.json({ entries: results });
-          }
-      );
-
-      // Close the connection after the query
-      connection.end(err => {
-          if (err) {
-              console.error('Error closing the database connection:', err);
-          }
+  try {
+      // Create the MySQL connection pool using mysql2/promise
+      const connection = await mysqlPromise.createConnection({
+          host: process.env.DB_HOST,
+          user: process.env.DB_USER,
+          password: process.env.DB_PASSWORD,
+          database: process.env.DB_NAME
       });
-  });
+
+      try {
+          // Query the database for the user's entries on the specific date
+          const [results] = await connection.execute(
+              'SELECT entry_id, entry_date, entry_title, entry_input, entry_label FROM entries WHERE user_id = ? AND entry_date = ?',
+              [userId, date]
+          );
+
+          // Return the entries as a JSON response
+          res.json({ entries: results });
+      } finally {
+          // Close the connection after the query
+          await connection.end();
+      }
+  } catch (err) {
+      console.error('Database error:', err);
+      res.status(500).json({ message: 'Database error' });
+  }
 });
 
 app.get('/entries', async (req, res) => {

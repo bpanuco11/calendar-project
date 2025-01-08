@@ -15,7 +15,7 @@ body {
     background-size: cover; 
     background-position: center; 
     background-repeat: no-repeat; 
-    transition: background-image 1s ease-in-out; /* Smooth image transition */
+    transition: background-image 1s ease-in-out; 
 }
 .overlay {
     position: fixed;
@@ -23,9 +23,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent */
+    background: rgba(0, 0, 0, 0.5); 
     z-index: 10;
-    display: none; /* Hidden by default */
+    display: none; 
 }
 .header-container {
     display: flex;
@@ -39,19 +39,32 @@ body {
     border-bottom: 3px solid black;
     overflow: hidden;
 }
-.calendar-title{
+
+.calendar-title {
     margin-top: -5px;
-    padding: 5px 10px;
+    padding: 10px 20px; 
     color: black;
-    justify-content: flex-start;
+    text-align: center; 
+    display: flex; 
+    justify-content: center; 
     align-items: center;
+    text-shadow: 2px 2px whitesmoke; 
 }
+.calendar-image {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.calendar-image:hover {
+    transform: scale(1.1); 
+}
+
 .header-button-container{
     width: 30%;
 }
 .header-container .button {
     padding: 0.4em .75em;
-    margin: 0em 5em; /* Adds responsive space between buttons */
+    margin: 0em 5em; 
     border: 2px solid black;
     border-radius: 5px;
     background-color: rgba(192, 230, 220, .8);
@@ -93,14 +106,14 @@ body {
     height: 100%;
     border: none;
     width: 7%;
-    cursor: pointer; /* This makes the arrow turn into a finger */
+    cursor: pointer; 
     border: 2px solid black;
 }
 .search-icon {
-    width: 90%; /* Adjust the size of the icon */
-    height: 100%; /* Keep proportions consistent */
-    image-rendering: pixelated; /* Ensures pixelated rendering */
-    filter: contrast(200%); /* Boost contrast to make it pop */
+    width: 90%; 
+    height: 100%; 
+    image-rendering: pixelated; 
+    filter: contrast(200%); 
 }
 .search-button:hover{
     background-color: rgba(75, 96, 167, 0.8);
@@ -108,17 +121,16 @@ body {
 .search-bar {
     padding: 5px 10px; 
     border-radius: 2px 0 0 2px;
-    border: none; /* No border by default */
-    outline: none; /* Remove outline */
+    border: none; 
+    outline: none; 
     background-color: rgba(192, 230, 220, .8);
-    color: black; /* Text color */
-    width: 70%; /* Adjust width */
-    height: 100%; /* Adjust height */
-    -webkit-font-smoothing: none; /* Disable font smoothing */
-    font-smooth: never; /* Disable font smoothing */
-    image-rendering: pixelated; /* Pixelated rendering */
-    font-family: 'Press Start 2P', cursive; /* Font family */
-    font-family: "Tiny5", serif; /*new font*/
+    color: black; 
+    width: 70%; 
+    height: 100%; 
+    -webkit-font-smoothing: none; 
+    font-smooth: never; 
+    image-rendering: pixelated; 
+    font-family: "Tiny5", serif; 
     border: 2px solid black;
     border-right: none; 
 }
@@ -136,9 +148,9 @@ body {
 
 .profile-pic {
     border-radius: 50%;
-    background-color: #ccc; /* Placeholder background */
+    background-color: #ccc; 
     width: 3.9vw; 
-    height: 3.9vw; /* Ensures a perfect circle */
+    height: 3.9vw; 
     border: 3px solid black;
 }
 
@@ -146,14 +158,12 @@ body {
     display: inline-block;
     padding: .5% .5%;
     background-color: rgba(100, 108, 181, 0.5);
-    width: 26.5%; /* Adjust width with percentages */
-    height: 55.5%; /* Adjust height with percentages */
+    width: 26.5%; 
+    height: 55.5%; 
     box-sizing: border-box;
     position: absolute;
     top: 10vh;
     left: 0%;
-    /*border-right: 2px solid rgba(0, 0, 0, 0.447); 
-    border-bottom: 2px solid rgba(0, 0, 0, 0.447);*/
     border-right: 3px solid black;
     border-bottom: 3px solid black;
     border-top: none;
@@ -185,7 +195,7 @@ body {
     border-left: none; /* Remove the left border */
 }
 .calendar-big-container .calendar-day:nth-child(7n) {
-    border-right: none; /* Add a gray border to the right for every 7th column */
+    border-right: none; /* Add a border to the right for every 7th column */
 }
 .calendar-header {
     position: relative;
@@ -210,22 +220,19 @@ body {
     gap: .2%;
     height: 100%;
     width: 100%;
-    overflow: hidden; /* Ensure contents don’t overflow */
+    overflow: hidden;
 }
 .calendar .calendar-body{
     height: 85%;
     width: 100%;
 }
 .calendar-day {
-    padding: 5px;
     padding: 10%;
     font-size: 12px;
     text-align: center;
     border: 2px solid darkslateblue;
-    /*border: 1% solid darkslateblue;*/
     background-color: rgba(192, 230, 220, 0.8);
-    font-family: 'Press Start 2P', cursive;
-    font-family: "Tiny5", serif; /*new font*/
+    font-family: "Tiny5", serif; 
     font-weight: 500;
     border-radius: 3px;
     border-radius: 4%;
@@ -247,7 +254,7 @@ body {
     -webkit-font-smoothing: none;
     font-smooth: never;
     image-rendering: pixelated;
-    transition: background-color 0.3s ease; /* Smooth transition */
+    transition: background-color 0.3s ease; 
 }
 
 .calendar-big-container .calendar-day:hover {
@@ -268,7 +275,7 @@ body {
 }
 
 .calendar-day.other-month {
-    background-color: rgba(255, 255, 255, .4); /* Semi-transparent white background */
+    background-color: rgba(255, 255, 255, .4); 
 }
 .calendar-container .button {
     padding: 5px 10px;
@@ -282,7 +289,7 @@ body {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    font-family: "Tiny5", serif; /*new font*/
+    font-family: "Tiny5", serif; 
     -webkit-font-smoothing: none;
     font-smooth: never;
     image-rendering: pixelated;
@@ -302,11 +309,11 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8); 
 }
 #prevMonth {
-    left: 5%; /* Moves 5% of the total width from the left */
+    left: 5%; 
 }
 
 #nextMonth {
-    right: 5%; /* Moves 5% of the total width from the right */
+    right: 5%; 
 }
 .button:disabled {
     background-color: #ddd;
@@ -317,15 +324,14 @@ body {
 }
 .left-section-container {
     display: flex;
-    flex-direction: row; /* Stack the items vertically */
+    flex-direction: row; 
     justify-content: flex-start;
     width: 26.5%;
     height: 34.5%;
     background-color: rgba(100, 108, 181, 0.5);
-    border-right: 2px solid rgba(0, 0, 0, 0.447);
     border-right: 3px solid black;
     position: absolute;
-    top: 65.5vh; /* Align with header */
+    top: 65.5vh; 
     border-top: none;
     left: 0%;
     z-index: 1;
@@ -348,7 +354,7 @@ body {
 .label-item {
     display: flex;
     gap: 4%;
-    align-items: center; /* Keeps checkbox and label aligned horizontally */
+    align-items: center; 
 }
 input[type="checkbox"] {
     width: 11%; 
@@ -360,7 +366,7 @@ input[type="checkbox"] {
     border-radius: 4px;
     background-color: rgba(192, 230, 220, 0.8);
     cursor: pointer;
-    position: relative; /* Needed for absolute positioning */
+    position: relative; 
 }
 input[type="checkbox"]:checked {
     border-color: rgb(0, 0, 0);
@@ -372,25 +378,25 @@ input[type="checkbox"]:checked::before {
     font-size: 16px;
     text-align: center;
     position: absolute;
-    top: 20%;  /* Vertically centers the checkmark */
-    left: 50%; /* Horizontally centers the checkmark */
-    transform: translate(-50%, -50%); /* Offsets by 50% to perfectly center */
+    top: 20%;  
+    left: 50%; 
+    transform: translate(-50%, -50%); 
 }
 .right-section-container{
     display: flex;
-    flex-direction: row; /* Stack the items vertically */
+    flex-direction: row; 
     justify-content: center;
     width: 3.5%;
     height: 90%;
     position: absolute;
-    top: 10vh; /* Align with header */
+    top: 10vh;
     right: 0%;
 }
 .add-button {
-    color: black; /* White text */
+    color: black; 
     padding: 10px;
     border: none;
-    font-size: 44px; /* Large font size for the "+" symbol */
+    font-size: 44px; 
     width: 100%;
     height: 100%;
     display: flex;
@@ -403,16 +409,16 @@ input[type="checkbox"]:checked::before {
     background-color: rgba(100, 108, 181, 1); 
 }
 .add-button:active {
-    background-color: rgba(37, 136, 217, 0.8); /* Even darker when clicked */
+    background-color: rgba(37, 136, 217, 0.8); 
 }
 @media (max-width: 768px) {
     .monthYear-header {
-        font-size: 14px; /* Scale down text size */
+        font-size: 14px;
         font-family: "Tiny5", serif; 
     }
 
     .header-container .button {
-        font-size: 12px; /* Scale down button text */
+        font-size: 12px; 
         
     }
    
@@ -420,27 +426,28 @@ input[type="checkbox"]:checked::before {
         width: 26.5%;
         font-size: 12px;
     }
+    
     .calendar-body {
-        font-size: 12px; /* Scale down the text size */
+        font-size: 12px; 
     }
 
     .calendar-day {
-        padding: 5%; /* Adjust padding for smaller calendar days */
+        padding: 5%; 
     }
     .search-bar-container {
-        flex-grow: 1; /* Take up available space */
+        flex-grow: 1; 
         display: flex;
-        justify-content: flex-end; /* Align search bar to the right */
-        padding-right: 20px; /* Adjust as needed */
+        justify-content: flex-end; 
+        padding-right: 20px;
         margin-left: -5%;
     }
     .calendar-container .button {
-        padding: 2px 6px; /* Reduce padding to make the button smaller */
-        margin: 0 0px; /* Reduce the margin between buttons */
+        padding: 2px 6px; 
+        margin: 0 0px; 
         border: 2px solid black;
         border-radius: 5px;
         background-color: rgba(192, 230, 220, .8);
-        font-size: 0.85em; /* Reduce font size slightly */
+        font-size: 0.85em; 
         color: black;
         cursor: pointer;
         position: absolute;
@@ -451,9 +458,9 @@ input[type="checkbox"]:checked::before {
         image-rendering: pixelated;
     }
     .header-container .button{
-        padding: .7px 6px; /* Reduce padding to make the button smaller */
-        margin: 0 5px; /* Reduce the margin between buttons */
-        font-size: 0.85em; /* Reduce font size slightly */
+        padding: .7px 6px; 
+        margin: 0 5px; 
+        font-size: 0.85em; 
     } 
     .search-button{
         width: 8%;
@@ -465,7 +472,7 @@ input[type="checkbox"]:checked::before {
 @media (max-width: 1024px) {
 
     .header-container .button {
-        margin: 0 1em; /* Reduce the gap between buttons */
+        margin: 0 1em; 
     }
     .monthYear-header {
         text-align: center;
@@ -479,11 +486,10 @@ input[type="checkbox"]:checked::before {
 }
 @media (min-width: 2560px) and (max-width: 3840px) {
     body {
-        font-size: 40px; /* Increase main text size to 20px */
+        font-size: 40px; 
     }
     .header-container .button {
-        font-size: 26px; /* Scale down button text */
-        
+        font-size: 26px; 
     }
     .calendar-container .button {
         font-size: 32px;
@@ -497,8 +503,8 @@ input[type="checkbox"]:checked::before {
 @media only screen and (max-width: 767px) {
     .calendar-container {
         font-size: .55em;
-        width: 26.5%; /* Adjust width with percentages */
-        height: 55.5%; /* Adjust height with percentages */
+        width: 26.5%; 
+        height: 55.5%; 
         top: 10vh;
         left: 0%;
         overflow: hidden;
@@ -517,7 +523,7 @@ input[type="checkbox"]:checked::before {
         font-size: .55em;
     }
     .left-section-container {
-        font-size: .35em;
+        font-size: .40em;
     }
     .header-button-container{
         width: 20%;
@@ -525,15 +531,14 @@ input[type="checkbox"]:checked::before {
     }
     .header-container .button {
         padding: 0.4em .75em;
-        /*margin: 0 5em; */
         border-radius: 5px;
     }
     .header-container{
         font-size: .55em;
     }
     .calendar-image{
-        width: 35px; /* 5% of the viewport width */
-        height: 35px; /* Ensures a perfect circle */
+        width: 35px; 
+        height: 35px;
     }
     .calendar-title{
         margin-top: -5px;
@@ -561,9 +566,9 @@ input[type="checkbox"]:checked::before {
     }
     .profile-pic {
         border-radius: 50%;
-        background-color: #ccc; /* Placeholder background */
-        width: 35px; /* 5% of the viewport width */
-        height: 35px; /* Ensures a perfect circle */
+        background-color: #ccc; 
+        width: 35px; 
+        height: 35px; 
     }
     .calendar-container .button {
         padding: 5px 1px;
@@ -588,7 +593,7 @@ input[type="checkbox"]:checked::before {
         border-radius: 4px;
         background-color: rgba(192, 230, 220, 0.8);
         cursor: pointer;
-        position: relative; /* Needed for absolute positioning */
+        position: relative; 
     }
     input[type="checkbox"]:checked {
         border-color: rgb(0, 0, 0);
@@ -597,15 +602,15 @@ input[type="checkbox"]:checked::before {
         content: "✔";
         display: block;
         color: blue;
-        font-size: 5px;
+        font-size: 4px;
         text-align: center;
         position: absolute;
-        top: 20%;  /* Vertically centers the checkmark */
-        left: 50%; /* Horizontally centers the checkmark */
-        transform: translate(-50%, -50%); /* Offsets by 50% to perfectly center */
+        top: 20%;  
+        left: 50%; 
+        transform: translate(-50%, -50%); 
     }
     .add-button {
-        font-size: 24px; /* Large font size for the "+" symbol */
+        font-size: 24px; 
     }
 }
 @media only screen and (max-width: 320px) {
@@ -613,7 +618,7 @@ input[type="checkbox"]:checked::before {
         font-size: .8em;
     }
     .add-button {
-        font-size: 22px; /* Large font size for the "+" symbol */
+        font-size: 22px; 
     }
     .search-button{
         width: 20%;

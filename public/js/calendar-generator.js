@@ -33,10 +33,8 @@ function renderLargeCalendar() {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
 
-    console.log('3:',entries);
     calendarDaysLarge.innerHTML = '';
 
-    // Get the first day of the current month
     const firstDay = new Date(year, month, 1);
 
     // Calculate the starting date (the Sunday before the first day of the month)
@@ -48,8 +46,8 @@ function renderLargeCalendar() {
     let dayCount = 0;
     for (let date = new Date(startDate); dayCount < daysToShow; date.setDate(date.getDate() + 1)) {
         const dayCell = document.createElement('div');
-        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }); // Get day name
-        const dayNumber = date.getDate(); // Get day number
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'short' }); 
+        const dayNumber = date.getDate(); 
 
         let displayMonth = date.getMonth();
         let displayYear = date.getFullYear();
@@ -107,6 +105,13 @@ function renderLargeCalendar() {
 
         dayCell.appendChild(entryList);
 
+        // Highlight the current day
+        const today = new Date();
+        if (today.getFullYear() === displayYear && today.getMonth() === displayMonth && today.getDate() === dayNumber) {
+            dayCell.style.color = 'blue'; 
+            dayCell.style.border = '2px solid blue'; 
+        }
+
         dayCell.className = (displayMonth === month) ? 'calendar-day' : 'calendar-day other-month';
 
         dayCell.addEventListener('click', () => {
@@ -130,20 +135,16 @@ function renderCalendar() {
     monthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
     headerMonthYear.textContent = `${currentDate.toLocaleString('default', { month: 'long' })} ${year}`;
 
-    // Clear the calendar
     calendarDays.innerHTML = '';
 
-    // Get the first day of the current month
     const firstDay = new Date(year, month, 1);
 
     // Calculate the starting date (the Sunday before the first day of the month)
     const startDate = new Date(firstDay);
     startDate.setDate(firstDay.getDate() - firstDay.getDay());
 
-    // Calculate the total number of days to show (6 weeks, or 42 days)
     const daysToShow = 42;
 
-    // Add the day names (Sun, Mon, Tue, etc.)
     ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].forEach(day => {
         const dayCell = document.createElement('div');
         dayCell.textContent = day;
@@ -151,7 +152,6 @@ function renderCalendar() {
         calendarDays.appendChild(dayCell);
     });
 
-    // Add the days for the 6 weeks
     let dayCount = 0;
     for (let date = new Date(startDate); dayCount < daysToShow; date.setDate(date.getDate() + 1)) {
         const dayCell = document.createElement('div');
@@ -189,10 +189,10 @@ function goToNextMonth() {
 
 function showDayView(date) {
     const dayText = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-    dayViewDate.textContent = dayText; // Update the date in the day-view
+    dayViewDate.textContent = dayText; 
 
     const dayViewEntriesContainer = document.querySelector('.day-view-entries');
-    dayViewEntriesContainer.innerHTML = ''; // Clear any previous entries
+    dayViewEntriesContainer.innerHTML = ''; 
 
     // Compare the clicked date with entry dates
     entries.forEach(entry => {
@@ -206,9 +206,8 @@ function showDayView(date) {
             // Create the entry div with the necessary elements
             const entryDiv = document.createElement('div');
             entryDiv.classList.add('day-view-entry');
-            entryDiv.id = `entry-${entry.entry_id}`; // Set id using entry_id
+            entryDiv.id = `entry-${entry.entry_id}`; 
             
-            // Create the title span
             const titleSpan = document.createElement('span');
             titleSpan.classList.add('entry-title');
             titleSpan.textContent = entry.entry_title;
@@ -230,21 +229,20 @@ function showDayView(date) {
             deleteButton.appendChild(deleteIcon);
             entryDiv.appendChild(deleteButton);
 
-            // Append the entry to the day-view-entries container
             dayViewEntriesContainer.appendChild(entryDiv);
 
-            //deleteButton.addEventListener('click', () => deleteJournalEntry(entry.entry_id, '/delete-entry'));
-            deleteButton.addEventListener('click', () => deleteJournalEntry(entry.entry_id, '/delete-entry'));
+            deleteButton.addEventListener('click', async () => 
+                await deleteJournalEntry(entry.entry_id, '/delete-entry', true));
         }
     });
 
-    dayViewContainer.classList.add('active'); // Show the day-view container
-    document.getElementById('overlay').style.display = 'block'; // Show overlay
+    dayViewContainer.classList.add('active'); 
+    document.getElementById('overlay').style.display = 'block'; 
 }
 
 closeDayViewButton.addEventListener('click', () => { 
-    dayViewContainer.classList.remove('active'); // Hide the day-view container
-    document.getElementById('overlay').style.display = 'none'; // Hide overlay
+    dayViewContainer.classList.remove('active'); 
+    document.getElementById('overlay').style.display = 'none'; 
     renderLargeCalendar();
 });
 
@@ -265,19 +263,17 @@ document.getElementById('saveNewEntryPlus').addEventListener('click', async () =
     try {
         await saveJournalEntryPlus('.newJournal-title-inputPlus', '.newJournal-textareaPlus', '#newJournal-labelPlus', '#entryDatePlus', '/save-entry');
         
-        // Hide the day-view container and overlay
         entryForm.classList.remove('active'); 
         document.getElementById('overlay').style.display = 'none';
 
-        // Now render the large calendar
         renderLargeCalendar();
     } catch (error) {
         console.error('Error in saveNewEntryPlus process:', error);
     }
 });
 
-document.getElementById('saveNewJournalEntry').addEventListener('click', () => {
-    saveJournalEntry('.newJournal-title-input', '.newJournal-textarea', '#newJournal-label', '/save-entry');
+document.getElementById('saveNewJournalEntry').addEventListener('click', async () => {
+    await saveJournalEntry('.newJournal-title-input', '.newJournal-textarea', '#newJournal-label', '/save-entry');
 });
 
 function openEntry(entry) {
@@ -321,22 +317,20 @@ function openEntry(entry) {
 
     const select = document.createElement('select');
     select.id = 'journal-label';
-
-    // List of label options
     const labels = ['task', 'important', 'meeting', 'birthday', 'personal', 'holiday', 'appointment', 'deadline'];
 
     // Create each option and set the correct label as selected
     labels.forEach(label => {
         const option = document.createElement('option');
         option.value = label;
-        option.textContent = label.charAt(0).toUpperCase() + label.slice(1); // Capitalize the first letter
+        option.textContent = label.charAt(0).toUpperCase() + label.slice(1);
         if (label === entry.entry_label) {
             option.selected = true; // Pre-select the correct label
         }
         select.appendChild(option);
     });
 
-    journalWindow.appendChild(select); // Append the select element to journalWindow
+    journalWindow.appendChild(select); 
 
     const journalFooter = document.createElement('div');
     journalFooter.classList.add('journal-footer');
@@ -346,18 +340,14 @@ function openEntry(entry) {
     goBackButton.classList.add('go-back');
     goBackButton.id = 'goBackJournalWindow';
 
-    // Create the <i> element for the arrow icon
     const arrowIcon = document.createElement('i');
     arrowIcon.classList.add('fas', 'fa-arrow-left');
 
-    // Append the icon to the button
     goBackButton.appendChild(arrowIcon);
-
-    // Append the button to the journal footer
     journalFooter.appendChild(goBackButton);
 
 
-    journalWindow.appendChild(journalFooter); // Append the footer to journalWindow
+    journalWindow.appendChild(journalFooter); 
 
     document.getElementById('saveJournalEntry').addEventListener('click', async () => {
         try {
@@ -375,31 +365,30 @@ function openEntry(entry) {
     });
     
     goBackButton.addEventListener('click', () => {
-        // Add logic to close the journal window or navigate back
-        journalWindow.classList.remove('active'); // Hide the journal window
-        dayViewContainer.classList.add('active'); // Show the day-view container
+        journalWindow.classList.remove('active');
+        dayViewContainer.classList.add('active'); 
     });
 
     // Make sure the journalWindow is visible after populating it
-    dayViewContainer.classList.remove('active'); // Hide the day-view container
-    journalWindow.classList.add('active'); // Show the journal window
-    document.getElementById('overlay').style.display = 'block'; // Show overlay
+    dayViewContainer.classList.remove('active');
+    journalWindow.classList.add('active'); 
+    document.getElementById('overlay').style.display = 'block'; 
 }
 
 goBackJournalButton.addEventListener('click', () => {
-    journalWindow.classList.remove('active'); // Hide the journal window
-    dayViewContainer.classList.add('active'); // Show the day-view container
+    journalWindow.classList.remove('active'); 
+    dayViewContainer.classList.add('active'); 
 });
 
 const entryForm = document.querySelector('.add-new-entry-plus');
 document.querySelector('.add-button').addEventListener('click', function() {
     entryForm.classList.add('active'); 
-    document.getElementById('overlay').style.display = 'block'; // Show overlay
+    document.getElementById('overlay').style.display = 'block'; 
 });
 
 goBackPlus.addEventListener('click', () => { 
-    entryForm.classList.remove('active'); // Hide the day-view container
-    document.getElementById('overlay').style.display = 'none'; // Hide overlay
+    entryForm.classList.remove('active'); 
+    document.getElementById('overlay').style.display = 'none'; 
 });
 
 prevMonthButton.addEventListener('click', goToPreviousMonth);

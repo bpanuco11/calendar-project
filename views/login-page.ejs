@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RetroMe</title>
-    <link rel="icon" type="image/png" href="assets/little-dude.png">
+    <title>PugTracks - Login</title>
+    <link rel="icon" type="image/png" href="assets/keshote.png">
     <link rel="stylesheet" href="/css/login-page.css"> 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
     <script src="/js/login-page.js" defer></script> 
@@ -22,30 +22,41 @@
     <div id="audio-control">
         <img src="../assets/speaker-off.png" alt="Audio Control" id="audio-icon">
     </div>
+    
 
-    <div id="login-page">
+    <div class="cat-icon">
         <img src="/assets/icons8-pixel-48.png" id="login-lildude-background" alt="Calendar Dude">
+    </div>
+    <div id="login-page">
         <% if (error) { %>
             <div class="error-message" id="error-message">
                 <span class="close-btn" id="close-btn">&times;</span>
                 <%= error %>
             </div>
         <% } %>
+    
         
-        <form class="login-form" action="/login" method="POST">
-            <label for="username" id="usernameLabel">USERNAME</label>
-            <input type="text" id="username" name="username" required>
-
-            <label for="password" id="passwordLabel">PASSWORD</label>
-            <input type="password" id="password" name="password" required>
-
+        <form action="/login" class="credentials" method="POST">
+            <div class="input-group">
+                <label for="username" id="usernameLabel">USERNAME</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+        
+            <div class="input-group">
+                <label for="password" id="passwordLabel">PASSWORD</label>
+                <input type="password" id="password" name="password" required>
+            </div>
             <button type="submit" id="login-button">LOG IN</button>
         </form>
-
-        <form action="/signup" method="GET">
-            <button type="submit" id="sign-button">SIGN UP</button>
-        </form>
+        
+        <div class="login-action-buttons">
+    
+            <form action="/signup" method="GET">
+                <button type="submit" id="sign-button">SIGN UP</button>
+            </form>
+        </div>
     </div>
+    
 
     <div id="copyright">
         &copy; <span id="year"></span> Panuco Productions

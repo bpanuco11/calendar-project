@@ -1,107 +1,99 @@
-/* General styling for the container */
 .dropdown-container {
     position: absolute;
-    top: calc(10vh + 1%); /* Positioned just below the header with some spacing */
-    right: 2%; /* Positioned to the right, near the profile icon */
+    top: calc(10vh + 1%); 
+    right: 2%; 
     width: clamp(20%, 30%, 40%); /* Minimum 20%, ideal 30%, maximum 40% of the viewport width */
-    height: clamp(30vh, 50vh, 60vh); /* Minimum 30vh, ideal 50vh, maximum 60vh of the viewport height */
     height: auto;
     background-color: rgba(37, 136, 217, 1);
     border: 2px solid black;
-    border-radius: 0.5em; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for a modern look */
-    display: none; /* Hidden by default, visible on profile icon click */
-    z-index: 10; /* Ensures it appears above other elements */
-    overflow: hidden; /* Prevent content overflow */
-    font-size: clamp(.6rem, 1.2vw, 10.2rem); /* Minimum 1rem, scales with viewport width, maximum 1.5rem */
-    padding: 1rem; /* Add spacing inside the container */
+    border-radius: 0.5em; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    display: none; 
+    z-index: 10; 
+    overflow: hidden;
+    font-size: clamp(.6rem, 1.2vw, 10.2rem); /* Minimum .6rem, scales with viewport width, maximum 10.2rem */
+    padding: 1rem; 
 }
-
-/* Close button (exit image) */
 .close-button {
     position: absolute;
-    top: 0.5rem; /* Slight spacing from the top */
-    right: 0.5rem; /* Slight spacing from the right */
-    background-color: transparent; /* Transparent background */
-    border: none; /* Remove button border */
-    padding: 0; /* Remove padding */
-    cursor: pointer; /* Pointer cursor for interactivity */
-    transition: opacity 0.2s ease; /* Smooth opacity transition */
+    top: 0.5rem; 
+    right: 0.5rem; 
+    background-color: transparent; 
+    border: none; 
+    padding: 0;
+    cursor: pointer; 
+    transition: opacity 0.2s ease; 
 }
 
 .close-button:hover {
-    opacity: 0.7; /* Slight opacity change on hover for feedback */
+    opacity: 0.7; 
 }
 
-/* Styling for the exit icon */
 .exit-icon {
     width: clamp(.8rem, 2vw, 30rem);
-    height: auto; /* Maintain aspect ratio */
-    max-width: 100%; /* Ensure it doesn't exceed the container width */
+    height: auto; 
+    max-width: 100%; 
 }
 
-/* Header inside dropdown */
 .dropdown-header {
     font-weight: bold;
     margin-bottom: 1rem;
     text-align: center;
 }
-/* Styling for the profile picture option */
+
 .picture-option {
     display: block;
-    width: calc(30%); /* Width relative to dropdown container's width */
-    min-width: 2rem; /* Prevent the image from becoming excessively large */
-    aspect-ratio: 1 / 1; /* Ensures a perfect square */
+    width: calc(30%); 
+    min-width: 2rem; 
+    aspect-ratio: 1 / 1;
     margin: 0 auto; /* Center the image */
-    border-radius: 50%; /* Circular shape */
+    border-radius: 50%;
     object-fit: cover; /* Ensures the image scales and fills the circle */
     border: 2px solid black;
 }
 
-/* Make the container visible when activated */
 .dropdown-container.active {
     display: block;
 }
 
 .divider {
-    margin: 1rem 0; /* Spacing around the line */
-    border: none; /* Remove default border styles */
-    border-top: 1px solid #ccc; /* Add a subtle gray line */
-    width: 80%; /* Centered, relative to container */
+    margin: 1rem 0; 
+    border: none; 
+    border-top: 1px solid #ccc; 
+    width: 80%; 
     margin-left: auto;
     margin-right: auto;
 }
 
-/* Styling for the logout button */
 .logout-button {
     display: block;
     margin: 1rem auto; /* Center the button */
-    background-color: transparent; /* Transparent background */
-    border: none; /* No default button borders */
-    cursor: pointer; /* Pointer cursor for interactivity */
-    padding: 0; /* Remove default padding */
-    transition: background-color 0.2s ease; /* Smooth transition for background color */
+    background-color: transparent;
+    border: none; 
+    cursor: pointer; 
+    padding: 0;
+    transition: background-color 0.2s ease; 
 }
 
 .logout-button:focus {
-    outline: 2px solid #0056b3; /* Focus outline for accessibility */
+    outline: 2px solid #0056b3; 
     outline-offset: 4px;
 }
 
 .logout-button:active {
-    background-color: rgba(128, 0, 128, 0.2); /* Purple highlight with slight transparency */
-    border-radius: 0.5em; /* Optional: Add a subtle border radius for better appearance */
+    background-color: rgba(128, 0, 128, 0.2); 
+    border-radius: 0.5em; 
 }
 
-/* Styling for the logout icon */
+
 .logout-icon {
     display: block;
-    width: clamp(1.5rem, 4vw, 30rem); /* Scales between 2rem and 3rem based on the viewport width */
+    width: clamp(1.5rem, 4vw, 30rem); /* Scales between 1.5rem and 30rem based on the viewport width */
     aspect-ratio: 1 / 1; /* Maintain a square aspect ratio */
     object-fit: contain; /* Scale the image while preserving aspect ratio */
-    transition: transform 0.2s ease; /* Smooth scaling effect on hover */
+    transition: transform 0.2s ease; 
 }
 
 .logout-button:hover .logout-icon {
-    transform: scale(1.1); /* Slightly enlarge the icon on hover */
+    transform: scale(1.1); 
 }

@@ -3,10 +3,10 @@ const dropdown = document.querySelector('.dropdown-container');
 const closeButton = document.getElementById('closeButton');
 const pictureOption = document.getElementById('pictureOption');
 const imageUpload = document.getElementById('imageUpload');
+const username = prfleImgeSql[0]['username'];
 
 function fillUserData() {
-    // Truncate username if it exceeds 12 characters
-    const username = prfleImgeSql[0]['username'];
+    // Truncate username if it exceeds 15 characters
     const truncatedUsername = username.length > 15 ? `${username.slice(0, 12)}...` : username;
     document.getElementById("username-header").textContent = truncatedUsername;
 
@@ -18,6 +18,7 @@ function fillUserData() {
         pictureOption.src = prfleImgeSql[0]['profile_image'];
         profileImage.src = prfleImgeSql[0]['profile_image'];
     }
+    localStorage.setItem(`logout-${username}`, 'false');
     return;
 }
 
@@ -56,7 +57,7 @@ imageUpload.addEventListener('change', async (event) => {
 
         reader.readAsDataURL(file); // Read the file as a data URL
 
-        // Now send the file to the server using a POST request
+        // Send the file to the server using a POST request
         try {
             const formData = new FormData();
             formData.append('profileImage', file); // Append the selected file
@@ -80,7 +81,17 @@ imageUpload.addEventListener('change', async (event) => {
 });
 
 document.getElementById('logoutButton').addEventListener('click', () => {
+    localStorage.setItem(`logout-${username}`, 'true');
     window.location.href = '/logout';
+});
+
+// Listen for logout events from other tabs
+window.addEventListener('storage', (event) => {
+    if (event.key === `logout-${username}` && event.newValue === 'true') {
+        // Redirect the user to the login page if logout is detected
+        window.location.href = '/logout';
+        localStorage.removeItem(`logout-${username}`);
+    }
 });
 
 fillUserData();
